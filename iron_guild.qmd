@@ -36,7 +36,7 @@ library(tidyverse)
 library(wesanderson)
 
 #C:
-path_in <- "/Users/kaer0069/Documents/Post doc - Karolina Eriksson/4 PhD chapter/R/nanopore_kraken_rawreads/reports2023_08_29/"
+path_in <- "/Users/kaer0069/Documents/Post doc - Karolina Eriksson/4 PhD chapter/R/iron_guild/data/nanopore_kraken_rawreads/reports2023_08_29/"
 
 #Path to save files
 path_out <- "/Users/kaer0069/Documents/Post doc - Karolina Eriksson/4 PhD chapter/R/output/"
@@ -400,7 +400,7 @@ ironguild_persistent <- ironguild %>%
 Iron guild table
 
 | Taxon | Current status | Why retain? |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | *P. aeruginosa* | **Core** | Very strong Fe response + known pathogen |
 | *Mycobacterium* sp018401645 | **Core** | Strong Fe response |
 | SOKP01 sp013375475 | **Core** | Strong Fe persistence + low background |
