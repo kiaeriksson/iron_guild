@@ -1,0 +1,818 @@
+3.72	2033	2033	U	0	unclassified
+96.28	52609	0	R	1	root
+96.28	52609	71	R1	131567	  cellular organisms
+96.14	52534	1957	D	2	    Bacteria
+47.91	26180	808	P	1224	      Proteobacteria
+28.08	15343	1345	C	1236	        Gammaproteobacteria
+18.44	10076	1364	O	80840	          Burkholderiales
+15.28	8351	7730	F	119060	            Burkholderiaceae
+0.46	252	38	G	3002036	              UBA2463
+0.30	162	162	S	3039159	                UBA2463 sp018402635
+0.10	52	52	S	3039156	                UBA2463 sp009646425
+0.33	183	141	G	3002044	              RS62
+0.07	40	40	S	3043340	                RS62 sp000496475
+0.00	2	2	S	3043339	                RS62 sp002340675
+0.11	60	60	G	3002039	              Polaromonas
+0.09	48	0	G	3001998	              UBA3064
+0.09	47	47	S	3014404	                UBA3064 sp002342365
+0.00	1	1	S	3014405	                UBA3064 sp002359635
+0.06	34	32	G	3001995	              Polynucleobacter
+0.00	2	2	S	3013710	                Polynucleobacter difficilis
+0.05	26	26	G	3002001	              Limnohabitans_A
+0.01	6	6	G	3002016	              Hydrogenophaga
+0.01	5	5	G	3002066	              Ideonella
+0.00	2	1	G	32008	              Burkholderia
+0.00	1	1	S	3002219	                Burkholderia mallei
+0.00	2	1	G	3001997	              Comamonas
+0.00	1	1	S	3014290	                Comamonas sp002754475
+0.00	1	0	G	3002017	              Janthinobacterium
+0.00	1	1	S	3027104	                Janthinobacterium lividum_D
+0.00	1	1	G	3002085	              Malikia
+0.00	1	0	G	3002111	              JADJCH01
+0.00	1	1	S	3062478	                JADJCH01 sp016703325
+0.53	288	8	F	3001740	            Methylophilaceae
+0.50	275	195	G	3014817	              BACL14
+0.15	80	80	S	3024382	                BACL14 sp002384685
+0.01	5	5	G	3014815	              Methylotenera
+0.07	37	16	F	3001745	            UBA3031
+0.04	21	21	S	3034843	              UBA3031 sp905478365
+0.02	11	10	F	3001743	            SG8-41
+0.00	1	0	G	3022663	              Ga0077527
+0.00	1	1	S	3050004	                Ga0077527 sp903885665
+0.02	9	2	F	3001741	            Rhodocyclaceae
+0.01	3	0	G	3017005	              Zoogloea
+0.01	3	3	S	3044806	                Zoogloea sp009026175
+0.00	1	0	G	3017001	              Propionivibrio
+0.00	1	1	S	3041495	                Propionivibrio aalborgensis
+0.00	1	0	G	3017002	              Desulfobacillus
+0.00	1	1	S	3043458	                Desulfobacillus denitrificans
+0.00	1	1	G	3017007	              Methyloversatilis
+0.00	1	0	G	3016997	              Azonexus
+0.00	1	1	S	3036025	                Azonexus sp016709965
+0.01	6	0	F	206379	            Nitrosomonadaceae
+0.01	6	6	G	3031663	              GCA-2721545
+0.01	5	0	F	3001756	            UBA11063
+0.01	5	5	S	3058938	              UBA11063 sp002892535
+0.00	2	1	F	1499392	            Chromobacteriaceae
+0.00	1	1	G	3017719	              Paludibacterium
+0.00	1	1	F	3001738	            Gallionellaceae
+0.00	1	0	F	3001752	            Chitinimonadaceae
+0.00	1	1	G	3052977	              Chitinimonas
+0.00	1	0	F	3001746	            SG8-39
+0.00	1	1	S	3037170	              SG8-39 sp001303445
+6.06	3314	1209	O	72274	          Pseudomonadales
+1.59	868	109	F	3001394	            Porticoccaceae
+1.39	759	197	G	3024395	              HTCC2207
+1.03	562	562	S	3024407	                HTCC2207 sp001438605
+0.83	455	448	F	3001398	            HTCC2089
+0.01	4	4	G	3025399	              UBA9659
+0.00	2	2	G	3025400	              UBA9926
+0.00	1	0	G	3025401	              UBA4421
+0.00	1	1	S	3031150	                UBA4421 sp902631405
+0.42	229	2	F	3001391	            Pseudohongiellaceae
+0.36	198	11	G	3018154	              UBA9145
+0.34	187	187	S	3018162	                UBA9145 sp001438145
+0.05	29	5	G	3018157	              Pseudohongiella
+0.04	24	24	S	3043550	                Pseudohongiella sp004535785
+0.36	195	89	F	135621	            Pseudomonadaceae
+0.19	106	106	G	3001424	              Pseudomonas_E
+0.29	157	6	F	3001393	            Halieaceae
+0.27	145	55	G	3024334	              Aequoribacter
+0.16	90	90	S	3044345	                Aequoribacter sp003520285
+0.01	6	0	G	3024331	              Haliea
+0.01	6	6	S	3024344	                Haliea salexigens
+0.28	154	0	F	3001401	            Marinomonadaceae
+0.28	154	139	G	3032051	              Marinomonas
+0.03	15	15	S	3032055	                Marinomonas arctica
+0.08	41	0	F	3001397	            Litoricolaceae
+0.08	41	3	G	3025294	              HIMB30
+0.06	31	31	S	3025310	                HIMB30 sp018401755
+0.01	7	7	S	3025297	                HIMB30 sp010024125
+0.01	4	2	F	3001404	            Cellvibrionaceae
+0.00	1	1	G	3037705	              Simiduia
+0.00	1	1	G	3037699	              Cellvibrio
+0.00	2	2	F	3001388	            Moraxellaceae
+0.58	315	99	O	91347	          Enterobacterales
+0.16	90	82	F	543	            Enterobacteriaceae
+0.01	5	0	G	561	              Escherichia
+0.01	5	5	S	562	                Escherichia coli
+0.00	2	2	G	3000328	              Cronobacter
+0.00	1	0	G	3000335	              Pectobacterium
+0.00	1	1	S	3008702	                Pectobacterium brasiliense
+0.16	88	42	F	3000313	            Alteromonadaceae
+0.05	29	9	G	3011577	              Pseudoalteromonas
+0.04	20	20	S	3014657	                Pseudoalteromonas tunicata
+0.02	9	9	G	3011584	              Rheinheimera
+0.01	6	3	G	3011581	              Pararheinheimera
+0.00	2	2	S	3035224	                Pararheinheimera sp000217935
+0.00	1	1	S	3035225	                Pararheinheimera sp003990335
+0.00	2	2	G	3011580	              Paraglaciecola
+0.06	31	0	F	3000312	            Shewanellaceae
+0.06	31	27	G	3008775	              Shewanella
+0.01	4	4	S	3008784	                Shewanella baltica
+0.01	4	0	F	641	            Vibrionaceae
+0.01	4	1	G	662	              Vibrio
+0.00	2	2	S	666	                Vibrio cholerae
+0.00	1	1	S	3002289	                Vibrio parahaemolyticus
+0.01	3	0	F	3000311	            Aeromonadaceae
+0.01	3	0	G	3005655	              Aeromonas
+0.01	3	3	S	3005669	                Aeromonas salmonicida
+0.37	203	1	O	3000170	          SAR86
+0.37	202	21	F	3017194	            D2472
+0.33	180	180	S	3017202	              D2472 sp002358345
+0.00	1	0	G	3017203	              SAR86A
+0.00	1	1	S	3023122	                SAR86A sp902559345
+0.07	39	0	O	135614	          Xanthomonadales
+0.07	39	3	F	32033	            Xanthomonadaceae
+0.07	36	0	G	3003840	              Arenimonas
+0.07	36	36	S	3031158	                Arenimonas sp903942465
+0.06	31	0	O	118969	          Legionellales
+0.06	31	25	F	444	            Legionellaceae
+0.01	5	4	G	445	              Legionella
+0.00	1	1	S	3003361	                Legionella norrlandica
+0.00	1	0	G	3003314	              UBA2653
+0.00	1	1	S	3055367	                UBA2653 sp003489505
+0.02	12	0	O	3000169	          Steroidobacterales
+0.02	12	1	F	3014871	            Steroidobacteraceae
+0.02	11	10	G	3014874	              UBA964
+0.00	1	1	S	3027712	                UBA964 sp903938365
+0.01	3	0	O	3000213	          Diplorickettsiales
+0.01	3	0	F	3053681	            Diplorickettsiaceae
+0.01	3	0	G	3053682	              Aquirickettsiella
+0.01	3	3	S	3053689	                Aquirickettsiella gammari
+0.00	2	1	O	3000197	          UBA4575
+0.00	1	1	S	3042449	            UBA4575 sp002386945
+0.00	1	0	O	3000181	          Enterobacterales_A
+0.00	1	1	F	3032121	            Enterobacteriaceae_A
+0.00	1	0	O	3000164	          Francisellales
+0.00	1	0	F	34064	            Francisellaceae
+0.00	1	0	F1	5000000	              F5
+0.00	1	0	F2	5000002	                F5001
+0.00	1	1	F3	5000040	                  F5002
+0.00	1	0	O	3000191	          Competibacterales
+0.00	1	0	F	3040303	            Competibacteraceae
+0.00	1	0	G	3040306	              Contendobacter
+0.00	1	1	S	3045492	                Contendobacter odensis_A
+18.35	10029	564	C	28211	        Alphaproteobacteria
+8.60	4698	0	O	3003102	          Pelagibacterales
+8.60	4698	2059	F	3008942	            Pelagibacteraceae
+4.69	2562	856	G	3008947	              IMCC9063
+3.05	1668	1668	S	3031612	                IMCC9063 sp000750175
+0.06	32	32	S	3031610	                IMCC9063 sp008638015
+0.01	6	6	S	3031614	                IMCC9063 sp000195085
+0.10	56	54	G	3008944	              Pelagibacter
+0.00	2	2	S	3009737	                Pelagibacter sp902590915
+0.03	19	0	G	3008946	              SYDM01
+0.03	19	19	S	3031179	                SYDM01 sp905620505
+0.00	1	1	G	3008950	              GCA-002704185
+0.00	1	1	G	3008945	              Fonsibacter
+6.68	3649	0	O	3003101	          Rhodobacterales
+6.68	3649	3053	F	3004881	            Rhodobacteraceae
+0.79	432	0	G	3004911	              UBA10365
+0.79	432	432	S	3037781	                UBA10365 sp003536295
+0.29	159	159	G	3004928	              Yoonia
+0.01	3	0	G	3005031	              Halovulum
+0.01	3	3	S	3067054	                Halovulum sediminis
+0.00	2	2	G	3004901	              Paracoccus
+0.98	533	0	O	204457	          Sphingomonadales
+0.73	399	200	F	3010260	            Sphingomonadaceae
+0.27	148	146	G	3010278	              Sphingorhabdus_B
+0.00	2	2	S	3046688	                Sphingorhabdus_B rigui
+0.05	28	28	G	3010268	              Sphingobium
+0.02	9	9	G	3010266	              Sphingomonas
+0.01	4	4	G	3010293	              Sandarakinorhabdus
+0.01	4	4	G	3010274	              Parasphingorhabdus
+0.00	2	2	G	3010273	              Chakrabartia
+0.00	2	2	G	3010275	              Erythrobacter
+0.00	1	1	G	3010267	              Novosphingobium
+0.00	1	1	G	3010277	              Polymorphobacter
+0.25	134	26	F	3010261	            Emcibacteraceae
+0.20	108	21	G	3037947	              UBA4441
+0.16	87	87	S	3037958	                UBA4441 sp905612225
+0.18	101	0	O	3003157	          Zavarziniales
+0.18	101	0	F	3062243	            Zavarziniaceae
+0.18	101	100	G	3062244	              Zavarzinia
+0.00	1	1	S	3062246	                Zavarzinia aquatilis
+0.18	100	0	O	3003121	          Thalassobaculales
+0.18	100	11	F	3039801	            Thalassobaculaceae
+0.16	89	18	G	3039809	              Thalassobaculum_A
+0.08	46	46	S	3068042	                Thalassobaculum_A sp000171835
+0.05	25	25	S	3068041	                Thalassobaculum_A sp018401495
+0.17	93	18	O	3003100	          Rhizobiales
+0.07	37	37	F	3004552	            Beijerinckiaceae
+0.04	23	23	F	3004551	            Xanthobacteraceae
+0.02	11	6	F	82115	            Rhizobiaceae
+0.01	4	4	G	3004585	              Allorhizobium
+0.00	1	0	G	3004620	              Fulvimarina
+0.00	1	1	S	3064339	                Fulvimarina pelagi
+0.01	4	0	F	3004558	            Devosiaceae
+0.00	2	0	G	3042529	              Maritalea
+0.00	2	2	S	3059690	                Maritalea mobilis
+0.00	2	2	G	3042524	              Devosia
+0.15	83	32	O	204441	          Rhodospirillales
+0.07	38	24	F	3018816	            Casp-alpha2
+0.03	14	13	G	3030558	              UBA4479
+0.00	1	1	S	3032671	                UBA4479 sp002389385
+0.02	13	1	F	41295	            Rhodospirillaceae
+0.02	10	6	G	3028267	              WLXB01
+0.01	4	4	S	3043717	                WLXB01 sp018666155
+0.00	1	0	G	3028271	              GCA-2737725
+0.00	1	1	S	3060488	                GCA-2737725 sp016793005
+0.00	1	0	G	3028280	              GCA-2691085
+0.00	1	1	S	3076487	                GCA-2691085 sp902575965
+0.10	53	0	O	3003120	          Micropepsales
+0.10	53	1	F	3039539	            Micropepsaceae
+0.10	52	24	G	3039540	              Rhizomicrobium
+0.04	23	23	S	3039551	                Rhizomicrobium sp903902075
+0.01	5	5	S	3039573	                Rhizomicrobium sp018449595
+0.08	45	2	O	204458	          Caulobacterales
+0.04	24	4	F	3014558	            Hyphomonadaceae
+0.03	19	14	G	3014562	              Hyphomonas
+0.01	5	5	S	3014596	                Hyphomonas sp016712445
+0.00	1	1	G	3014567	              UBA7672
+0.03	17	12	F	76892	            Caulobacteraceae
+0.01	3	2	G	3021097	              Phenylobacterium
+0.00	1	1	S	3040915	                Phenylobacterium sp018821435
+0.00	2	2	G	3021094	              Brevundimonas
+0.00	2	0	F	3014561	            TH1-2
+0.00	2	0	G	3052103	              UBA1942
+0.00	2	2	S	3062901	                UBA1942 sp009773395
+0.06	35	35	O	3003104	          HIMB59
+0.03	17	0	O	3003106	          Azospirillales
+0.03	17	0	F	3024051	            Azospirillaceae
+0.03	17	17	G	3024056	              Niveispirillum
+0.03	16	4	O	766	          Rickettsiales
+0.01	5	0	F	3003198	            UBA1997
+0.01	5	5	G	3023131	              UBA2645
+0.01	5	5	F	3003199	            Midichloriaceae
+0.00	1	0	F	3003202	            33-17
+0.00	1	0	G	3058968	              RICK01
+0.00	1	1	S	3078228	                RICK01 sp003932735
+0.00	1	0	F	942	            Anaplasmataceae
+0.00	1	0	G	953	              Wolbachia
+0.00	1	1	S	3003232	                Wolbachia pipientis
+0.03	15	4	O	3003118	          MPNO01
+0.02	11	3	F	3035535	            UBA830
+0.01	8	8	S	3035542	              UBA830 sp905181725
+0.01	7	0	O	3003111	          SMXQ01
+0.01	7	0	G	3028833	            WHSO01
+0.01	7	7	S	3076348	              WHSO01 sp009380075
+0.01	5	0	O	3003119	          Rhizobiales_B
+0.01	5	0	F	3036197	            TMED25
+0.01	5	0	G	3046515	              CAJIYR01
+0.01	5	5	S	3056172	                CAJIYR01 sp905181735
+0.01	4	0	O	3003125	          Tistrellales
+0.01	4	0	F	3041919	            Tistrellaceae
+0.01	4	0	G	3041920	              Tistrella
+0.01	4	4	S	3041922	                Tistrella bauzanensis
+0.01	3	0	O	3003138	          Oceanibaculales
+0.01	3	0	F	3047466	            Oceanibaculaceae
+0.01	3	1	G	3047467	              Oceanibaculum
+0.00	2	2	S	3047468	                Oceanibaculum sp018823745
+0.01	3	3	O	3003129	          SP197
+0.00	2	0	O	3003136	          Micavibrionales
+0.00	2	1	F	3046784	            Micavibrionaceae
+0.00	1	0	G	3046799	              GCA-2708415
+0.00	1	1	S	3063077	                GCA-2708415 sp009995595
+0.00	1	0	O	3003144	          Reyranellales
+0.00	1	0	F	3051489	            Reyranellaceae
+0.00	1	1	G	3051490	              Reyranella
+0.00	1	0	O	3003140	          16-39-46
+0.00	1	0	G	3048951	            M30B67
+0.00	1	1	S	3077434	              M30B67 sp018401675
+0.00	1	1	O	3003122	          UBA6615
+27.58	15071	31	P	3000004	      Bacteroidota
+27.40	14971	569	C	200643	        Bacteroidia
+21.57	11788	309	O	3004237	          Flavobacteriales
+12.78	6983	2537	F	3005701	            Flavobacteriaceae
+5.25	2867	0	G	3005741	              MAG-121220-bin8
+5.25	2867	2867	S	3025970	                MAG-121220-bin8 sp002700465
+1.30	709	709	G	3005733	              MAG-120531
+0.88	480	478	G	3005732	              Flavobacterium
+0.00	1	1	S	3006270	                Flavobacterium sp903819815
+0.00	1	1	S	3006188	                Flavobacterium cucumis
+0.31	170	5	G	3005765	              UBA3478
+0.30	165	165	S	3041691	                UBA3478 sp018402205
+0.30	165	70	G	3005751	              Polaribacter
+0.17	95	95	S	3033600	                Polaribacter gangjinensis
+0.08	43	43	G	3005737	              MS024-2A
+0.01	5	0	G	3005841	              Spongiivirga
+0.01	5	5	S	3067562	                Spongiivirga citrea
+0.00	2	2	G	3005844	              Confluentibacter
+0.00	2	0	G	3005898	              Sediminicola
+0.00	2	2	S	3077493	                Sediminicola sp001430825
+0.00	1	1	G	3005811	              Ulvibacter
+0.00	1	0	G	3005772	              Olleya
+0.00	1	1	S	3043980	                Olleya sp002831645
+0.00	1	0	G	3005759	              SCGC-AAA160-P02
+0.00	1	1	S	3038941	                SCGC-AAA160-P02 sp013214275
+6.84	3738	24	F	3005703	            Schleiferiaceae
+6.80	3714	1981	G	3019322	              TMED14
+2.83	1547	1547	S	3028652	                TMED14 sp016868755
+0.25	136	136	S	3028656	                TMED14 sp903821715
+0.09	50	50	S	3028646	                TMED14 sp001438205
+1.16	634	77	F	3005713	            Crocinitomicaceae
+0.79	429	409	G	3039746	              UBA952
+0.02	10	10	S	3039791	                UBA952 sp002293045
+0.01	4	4	S	3039768	                UBA952 sp903939755
+0.01	4	4	S	3039797	                UBA952 sp009926125
+0.00	1	1	S	3039793	                UBA952 sp016872115
+0.00	1	1	S	3039765	                UBA952 sp903935095
+0.23	123	22	G	3039755	              Crocinitomix
+0.18	101	101	S	3065605	                Crocinitomix algicola
+0.01	4	0	G	3039752	              UBA2040
+0.01	4	4	S	3061820	                UBA2040 sp002384725
+0.00	1	1	G	3039747	              M0103
+0.15	84	0	F	3005704	            Salibacteraceae
+0.15	82	44	G	3026041	              SHAN690
+0.03	17	17	S	3026053	                SHAN690 sp002336485
+0.02	11	11	S	3026056	                SHAN690 sp018401875
+0.02	10	10	S	3026054	                SHAN690 sp002390775
+0.00	2	0	G	3026044	              JAAZVO01
+0.00	2	2	S	3057385	                JAAZVO01 sp018609045
+0.06	33	8	F	3005709	            UA16
+0.03	16	0	G	3036304	              UBA4660
+0.03	16	16	S	3070225	                UBA4660 sp016722445
+0.01	6	0	G	3036301	              CAIZGX01
+0.01	6	6	S	3061681	                CAIZGX01 sp016868835
+0.00	2	0	G	3036308	              RI-182
+0.00	2	2	S	3075392	                RI-182 sp016124575
+0.00	1	1	S	3036294	              UA16 sp002390615
+0.01	4	0	F	3005721	            UBA10329
+0.01	4	4	S	3065244	              UBA10329 sp018402015
+0.01	3	0	F	3005710	            CAIKAF01
+0.00	2	2	S	3036659	              CAIKAF01 sp903837495
+0.00	1	1	S	3036660	              CAIKAF01 sp016866335
+2.00	1095	28	O	3004241	          Cytophagales
+1.83	1001	596	F	3027939	            Cyclobacteriaceae
+0.46	253	250	G	3028734	              Algoriphagus
+0.01	3	3	S	3037047	                Algoriphagus sp014324365
+0.27	145	72	G	3028733	              UBA4465
+0.13	73	73	S	3028784	                UBA4465 sp002470835
+0.01	5	5	G	3028745	              Reichenbachiella
+0.00	1	1	G	3028735	              Fabibacter
+0.00	1	0	G	3028762	              Fulvivirga
+0.00	1	1	S	3070362	                Fulvivirga sp007097395
+0.12	66	27	F	3027938	            Spirosomaceae
+0.07	39	38	G	3027954	              Aquirufa
+0.00	1	1	S	3039439	                Aquirufa sp903898715
+1.99	1087	125	O	3004242	          NS11-12g
+1.07	587	586	F	3030627	            UBA9320
+0.00	1	1	S	3053536	              UBA9320 sp018402155
+0.69	375	199	F	3030624	            UBA955
+0.26	143	143	S	3030638	              UBA955 sp016868785
+0.06	31	31	S	3030634	              UBA955 sp002737625
+0.00	2	0	G	3030641	              RGEC01
+0.00	2	2	S	3074158	                RGEC01 sp016787485
+0.57	312	11	O	3004239	          Chitinophagales
+0.46	254	20	F	3019720	            Chitinophagaceae
+0.40	219	129	G	3019736	              Sediminibacterium
+0.09	50	50	S	3022900	                Sediminibacterium sp903953815
+0.06	35	35	S	3022911	                Sediminibacterium sp903958045
+0.01	5	5	S	3022910	                Sediminibacterium sp017983845
+0.03	14	10	G	3019749	              SXYR01
+0.01	4	4	S	3048751	                SXYR01 sp016868855
+0.00	1	0	G	3019763	              UBA1952
+0.00	1	1	S	3063244	                UBA1952 sp004144185
+0.08	46	0	F	3019727	            UBA8649
+0.08	46	0	G	3050720	              JAFMKE01
+0.08	46	46	S	3062124	                JAFMKE01 sp016777395
+0.00	1	0	F	3019723	            BACL12
+0.00	1	0	G	3031856	              UBA11426
+0.00	1	1	S	3057230	                UBA11426 sp002346225
+0.20	107	1	O	3004244	          AKYH767
+0.10	54	52	F	3033425	            B-17BO
+0.00	2	2	G	3037852	              UBA2475
+0.10	52	0	F	3033422	            2-12-FULL-35-15
+0.10	52	52	S	3033434	              2-12-FULL-35-15 sp903911435
+0.01	6	0	O	3004238	          Sphingobacteriales
+0.01	6	3	F	3013897	            Sphingobacteriaceae
+0.01	3	3	G	3013906	              Daejeonella
+0.01	5	1	O	171549	          Bacteroidales
+0.00	2	0	F	171551	            Porphyromonadaceae
+0.00	2	0	G	836	              Porphyromonas
+0.00	1	1	S	837	                Porphyromonas gingivalis
+0.00	1	1	S	3010648	                Porphyromonas pasteri
+0.00	1	1	F	3004275	            UBA7960
+0.00	1	0	F	3004251	            UBA932
+0.00	1	0	G	3012166	              Cryptobacteroides
+0.00	1	1	S	3012212	                Cryptobacteroides sp900319185
+0.00	2	1	O	3004243	          AKYH767-A
+0.00	1	0	F	3030698	            OLB10
+0.00	1	0	G	3030708	              JADJOA01
+0.00	1	1	S	3065265	                JADJOA01 sp016714005
+0.10	56	0	C	3004228	        Rhodothermia
+0.08	45	10	O	3017681	          Rhodothermales
+0.06	35	33	F	3021599	            UBA10348
+0.00	2	2	S	3028547	              UBA10348 sp002469915
+0.02	11	11	O	3017680	          Balneolales
+0.02	12	1	C	3004231	        Kapabacteria
+0.02	11	11	O	3026813	          Kapabacteriales
+0.00	1	0	C	3004232	        Ignavibacteria
+0.00	1	0	O	3028834	          Ignavibacteriales
+0.00	1	0	F	3028838	            Ignavibacteriaceae
+0.00	1	1	G	3029726	              IGN3
+12.18	6656	125	P	3000000	      Actinobacteriota
+5.62	3071	164	C	1760	        Actinomycetia
+3.22	1761	24	O	3000968	          Nanopelagicales
+2.79	1525	170	F	3011459	            Nanopelagicaceae
+1.25	681	681	G	3011470	              MAG-120802
+1.14	624	568	G	3011474	              Planktophila
+0.10	55	55	S	3026583	                Planktophila limnetica
+0.00	1	1	S	3026636	                Planktophila sp903844585
+0.09	50	50	G	3011478	              UBA3012
+0.20	112	0	F	3011462	            UBA5976
+0.20	112	112	S	3036703	              UBA5976 sp009698575
+0.17	95	12	F	3011460	            S36-B12
+0.12	66	3	G	3014722	              Mxb001
+0.12	63	63	S	3024974	                Mxb001 sp004379115
+0.02	11	6	G	3014727	              UBA6154
+0.01	5	5	S	3047818	                UBA6154 sp018401415
+0.01	6	1	G	3014724	              UBA4592
+0.01	5	5	S	3031060	                UBA4592 sp905181745
+0.01	5	0	F	3011465	            AcAMD-5
+0.01	5	5	S	3054576	              AcAMD-5 sp016870575
+1.25	684	31	O	3000967	          Actinomycetales
+1.19	652	578	F	85023	            Microbacteriaceae
+0.08	46	46	G	3011870	              Rhodoluna
+0.03	17	16	G	3011867	              Aquiluna
+0.00	1	1	S	3033042	                Aquiluna sp018402615
+0.01	4	4	G	3011869	              Pontimonas
+0.01	3	1	G	3011861	              Microbacterium
+0.00	1	1	S	3023811	                Microbacterium sp000800925
+0.00	1	1	S	3023809	                Microbacterium hominis
+0.01	3	0	G	3011868	              MWH-TA3
+0.00	2	2	S	3034590	                MWH-TA3 sp003053925
+0.00	1	1	S	3034586	                MWH-TA3 sp903940225
+0.00	1	0	G	3011900	              UBA963
+0.00	1	1	S	3063586	                UBA963 sp903907615
+0.00	1	0	F	3003623	            Micrococcaceae
+0.00	1	1	G	3006880	              Nesterenkonia
+0.83	454	11	O	3000966	          Mycobacteriales
+0.81	442	36	F	1762	            Mycobacteriaceae
+0.74	406	270	G	1763	              Mycobacterium
+0.25	136	136	S	3001337	                Mycobacterium sp018401645
+0.00	1	0	F	3000980	            Pseudonocardiaceae
+0.00	1	0	G	3033951	              Kutzneria
+0.00	1	1	S	3063893	                Kutzneria sp000568255
+0.01	7	0	O	3000970	          Nitriliruptorales
+0.01	7	0	F	3033831	            Nitriliruptoraceae
+0.01	7	0	G	3033836	              CSBr16-57R1
+0.01	7	7	S	3051177	                CSBr16-57R1 sp018401275
+0.00	1	0	O	85009	          Propionibacteriales
+0.00	1	0	F	3004132	            Nocardioidaceae
+0.00	1	1	G	3027197	              Nocardioides
+5.57	3045	40	C	3000960	        Acidimicrobiia
+5.43	2966	104	O	3016341	          Acidimicrobiales
+5.12	2796	140	F	3016532	            Ilumatobacteraceae
+2.53	1382	530	G	3024609	              BACL27
+1.46	798	798	S	3034053	                BACL27 sp014190055
+0.05	29	29	S	3034059	                BACL27 sp003569125
+0.05	25	25	S	3034062	                BACL27 sp014190295
+1.23	672	378	G	3024608	              Casp-actino8
+0.54	294	294	S	3029571	                Casp-actino8 sp009700145
+0.59	322	6	G	3024610	              UBA3006
+0.39	215	215	S	3036371	                UBA3006 sp002367695
+0.18	101	101	S	3036373	                UBA3006 sp903895515
+0.44	243	59	G	3024612	              UBA2093
+0.33	180	180	S	3039396	                UBA2093 sp903929185
+0.01	4	4	S	3039407	                UBA2093 sp009702755
+0.05	29	29	G	3024615	              F1-20-MAGs119
+0.01	5	5	G	3024607	              F1-60-MAGs027
+0.01	3	3	G	3024613	              Ilumatobacter_A
+0.12	66	2	F	3016534	            UBA8139
+0.11	62	50	G	3029523	              F1-20-MAGs160
+0.02	11	11	S	3029534	                F1-20-MAGs160 sp903827085
+0.00	1	1	S	3029528	                F1-20-MAGs160 sp009700115
+0.00	2	0	G	3029527	              M30B73
+0.00	2	2	S	3078503	                M30B73 sp018401565
+0.07	39	0	O	3016343	          IMCC26256
+0.07	39	0	F	3037125	            PALSA-555
+0.07	39	0	G	3037137	              SHUY01
+0.07	39	39	S	3037142	                SHUY01 sp009694435
+0.76	415	21	C	3000959	        Thermoleophilia
+0.50	271	2	O	3015081	          Solirubrobacterales
+0.34	186	3	F	3015087	            Solirubrobacteraceae
+0.33	183	79	G	3015091	              F1-60-MAGs163
+0.19	104	104	S	3015111	                F1-60-MAGs163 sp903959665
+0.15	83	0	F	3015088	            70-9
+0.15	83	77	G	3034740	              67-14
+0.01	6	6	S	3034757	                67-14 sp016712175
+0.12	65	0	O	3015082	          Gaiellales
+0.12	65	15	F	3028679	            F1-60-MAGs149
+0.09	50	50	S	3028687	              F1-60-MAGs149 sp009694475
+0.11	58	0	O	3015083	          Miltoncostaeales
+0.11	58	0	F	3029680	            Miltoncostaeaceae
+0.11	58	34	G	3029682	              SYFI01
+0.04	22	22	S	3039364	                SYFI01 sp903943955
+0.00	2	2	S	3039370	                SYFI01 sp009694365
+1.71	936	3	P	3000005	      Verrucomicrobiota
+1.71	933	6	C	3005166	        Verrucomicrobiae
+0.86	472	10	O	3005170	          Opitutales
+0.67	368	367	F	3013197	            UBA953
+0.00	1	1	S	3019922	              UBA953 sp903840355
+0.16	90	83	F	3013196	            Opitutaceae
+0.01	4	4	G	3013241	              Pelagicoccus
+0.01	3	3	G	3013234	              Cephaloticoccus
+0.01	4	1	F	3013206	            UBA2995
+0.01	3	3	S	3057022	              UBA2995 sp014529615
+0.45	245	0	O	3005172	          Methylacidiphilales
+0.45	244	5	F	3032709	            UBA3015
+0.44	239	239	S	3032715	              UBA3015 sp001438005
+0.00	1	0	F	3032711	            UBA1321
+0.00	1	1	G	3066705	              JABDGH01
+0.28	151	1	O	3005173	          Chthoniobacterales
+0.25	135	31	F	3037207	            JACTMZ01
+0.19	104	104	S	3059608	              JACTMZ01 sp018402585
+0.03	15	1	F	3037208	            Terrimicrobiaceae
+0.02	13	0	G	3061545	              UBA967
+0.02	13	13	S	3061552	                UBA967 sp018402345
+0.00	1	1	G	3061546	              Terrimicrobium
+0.08	42	16	O	3005171	          Pedosphaerales
+0.03	17	4	F	3021995	            SIBE01
+0.02	13	0	G	3067620	              VHCZ01
+0.02	13	13	S	3072122	                VHCZ01 sp016871535
+0.01	8	0	F	3021975	            UBA9464
+0.01	8	4	G	3028883	              SXXZ01
+0.01	4	4	S	3028896	                SXXZ01 sp903939515
+0.00	1	0	F	3021984	            J093
+0.00	1	0	G	3054865	              MWFF01
+0.00	1	1	S	3054871	                MWFF01 sp002071485
+0.03	17	0	O	3005169	          Verrucomicrobiales
+0.01	8	0	F	3005178	            DEV007
+0.01	8	6	G	3048786	              Arctic95D-9
+0.00	1	1	S	3052407	                Arctic95D-9 sp018058245
+0.00	1	1	S	3052415	                Arctic95D-9 sp016795385
+0.01	5	0	F	3005176	            Akkermansiaceae
+0.01	5	1	G	3005183	              Luteolibacter
+0.01	4	4	S	3024161	                Luteolibacter sp018402445
+0.01	4	0	F	3005177	            Verrucomicrobiaceae
+0.01	4	3	G	3039958	              Prosthecobacter
+0.00	1	1	S	3039971	                Prosthecobacter fusiformis
+1.42	775	2	P	1117	      Cyanobacteria
+1.41	773	152	C	3009910	        Cyanobacteriia
+1.13	619	0	O	3009913	          PCC-6307
+1.13	619	336	F	3009931	            Cyanobiaceae
+0.50	274	33	G	3009956	              Cyanobium_A
+0.44	241	241	S	3066843	                Cyanobium_A usitatum
+0.02	9	8	G	3009946	              NIES-981
+0.00	1	1	S	3056449	                NIES-981 sp018400215
+0.00	2	0	O	3009914	          Cyanobacteriales
+0.00	1	0	F	3014322	            Microcystaceae
+0.00	1	0	G	3014347	              Microcystis
+0.00	1	1	S	3014352	                Microcystis panniformis
+0.00	1	0	F	1162	            Nostocaceae
+0.00	1	0	G	3014951	              Nodularia
+0.00	1	1	S	3037190	                Nodularia sp015207755
+0.65	357	9	P	3000027	      Planctomycetota
+0.62	339	10	C	3026270	        Planctomycetia
+0.51	276	27	O	3026295	          Pirellulales
+0.45	247	91	F	3026300	            UBA1268
+0.27	148	0	G	3026316	              M30B53
+0.27	148	148	S	3042306	                M30B53 sp018401745
+0.01	4	0	G	3026317	              QWPN01
+0.01	4	4	S	3043811	                QWPN01 sp903919035
+0.01	4	0	G	3026321	              QWOQ01
+0.01	4	4	S	3055379	                QWOQ01 sp003669585
+0.00	2	0	F	3026304	            Lacipirellulaceae
+0.00	2	0	G	3050737	              Botrimarina
+0.00	2	2	S	3061753	                Botrimarina mediterranea
+0.08	41	0	O	3026296	          Gemmatales
+0.08	41	0	F	3034694	            Gemmataceae
+0.08	41	41	G	3034696	              UBA969
+0.02	12	0	O	3026297	          Planctomycetales
+0.02	12	0	F	3034932	            Planctomycetaceae
+0.02	12	0	G	3034954	              Fuerstia
+0.02	12	12	S	3072198	                Fuerstia marisgermanicae
+0.02	9	0	C	3026271	        Phycisphaerae
+0.02	9	0	O	3026420	          Phycisphaerales
+0.02	9	0	F	3027611	            SM1A02
+0.02	9	0	G	3027616	              F1-60-MAGs104
+0.02	9	9	S	3027644	                F1-60-MAGs104 sp903961015
+0.38	210	0	P	3000011	      Chloroflexota
+0.38	208	0	C	3017325	        Limnocylindria
+0.38	208	3	O	3027378	          Limnocylindrales
+0.38	205	0	F	3027382	            Limnocylindraceae
+0.38	205	205	G	3028163	              Limnocylindrus
+0.00	1	1	C	3017323	        Anaerolineae
+0.00	1	0	C	3017326	        Chloroflexia
+0.00	1	0	O	3029926	          Chloroflexales
+0.00	1	0	F	3029932	            Roseiflexaceae
+0.00	1	1	G	3038756	              UBA965
+0.15	81	0	P	3000021	      Gemmatimonadota
+0.15	81	0	C	3024237	        Gemmatimonadetes
+0.14	78	0	O	3024240	          Gemmatimonadales
+0.14	78	19	F	3028933	            Gemmatimonadaceae
+0.11	59	59	G	3028944	              PNKF01
+0.01	3	0	O	3024239	          Longimicrobiales
+0.01	3	3	F	3024243	            UBA6960
+0.14	77	0	P	1239	      Firmicutes
+0.14	77	1	C	91061	        Bacilli
+0.13	69	0	O	3000461	          RFN20
+0.13	69	0	F	3019388	            CAG-826
+0.13	69	0	G	3019398	              UBA970
+0.13	69	69	S	3045786	                UBA970 sp903845135
+0.01	6	0	O	3000466	          Acholeplasmatales
+0.01	6	6	F	3023067	            Acholeplasmataceae
+0.00	1	0	O	186826	          Lactobacillales
+0.00	1	0	F	33958	            Lactobacillaceae
+0.00	1	0	G	3003415	              Oenococcus
+0.00	1	1	S	3004782	                Oenococcus oeni
+0.14	76	0	P	3000002	      Campylobacterota
+0.14	76	0	C	3001870	        Campylobacteria
+0.14	76	3	O	213849	          Campylobacterales
+0.12	65	60	F	3001873	            Arcobacteraceae
+0.01	4	3	G	3012813	              Aliarcobacter
+0.00	1	1	S	3012848	                Aliarcobacter acticola
+0.00	1	1	G	3012818	              Poseidonibacter
+0.01	7	1	F	3001874	            Sulfurimonadaceae
+0.01	6	3	G	3019515	              Sulfurimonas
+0.01	3	3	S	3020426	                Sulfurimonas sp013791885
+0.00	1	0	F	3001875	            Sulfurovaceae
+0.00	1	0	G	3038109	              Sulfurovum
+0.00	1	1	S	3038130	                Sulfurovum sp014763895
+0.08	43	2	P	3000012	      Patescibacteria
+0.03	14	0	C	3017744	        Gracilibacteria
+0.02	9	1	O	3031712	          UM-FILTER-43-11
+0.01	3	1	G	3048921	            JAFGCR01
+0.00	2	2	S	3074416	              JAFGCR01 sp018817125
+0.01	3	0	G	3048916	            JAFGTE01
+0.01	3	3	S	3048926	              JAFGTE01 sp018825145
+0.00	2	0	G	3048917	            JAHJBZ01
+0.00	2	2	S	3050767	              JAHJBZ01 sp018813295
+0.00	2	0	O	3031709	          Peribacterales
+0.00	2	1	F	3031718	            Peribacteraceae
+0.00	1	0	G	3031735	              VMFU01
+0.00	1	1	S	3072802	                VMFU01 sp007376205
+0.00	2	0	O	3031710	          UBA1369
+0.00	2	2	F	3044366	            2-02-FULL-48-14
+0.00	1	0	O	3031711	          UBA4473
+0.00	1	1	G	3045967	            JAACPJ01
+0.02	9	0	C	3017741	        Microgenomatia
+0.01	5	0	O	3022066	          UBA1400
+0.01	5	2	F	3022088	            PJMF01
+0.01	3	3	G	3030900	              VFLK01
+0.00	2	0	O	3022072	          UBA1406
+0.00	2	2	F	3035197	            GWC2-37-13
+0.00	2	0	O	3022069	          Levybacterales
+0.00	2	0	F	3029247	            UBA12049
+0.00	2	1	G	3029260	              2-01-FULL-39-10-A
+0.00	1	1	S	3065344	                2-01-FULL-39-10-A sp018061075
+0.01	8	0	C	3017739	        ABY1
+0.01	4	0	O	3020705	          UBA1558
+0.01	4	0	F	3030196	            GWA2-36-10
+0.01	4	4	G	3036996	              CAIRBL01
+0.01	4	0	O	3020712	          GWA2-43-13
+0.01	4	0	G	3043255	            JABIPD01
+0.01	4	4	S	3045861	              JABIPD01 sp018698735
+0.01	5	0	C	3017742	        Saccharimonadia
+0.01	3	1	O	3029426	          Saccharimonadales
+0.00	1	0	F	3029431	            UBA4665
+0.00	1	0	G	3029468	              UBA5150
+0.00	1	1	S	3066395	                UBA5150 sp002792275
+0.00	1	1	F	3029444	            UBA10212
+0.00	2	0	O	3029428	          CAILAD01
+0.00	2	0	F	3060256	            BJGX01
+0.00	2	2	S	3074010	              BJGX01 sp014191035
+0.01	3	0	C	3017738	        Paceibacteria
+0.01	3	3	O	3017763	          UBA9983_A
+0.00	2	0	C	3017750	        CPR2
+0.00	2	0	O	3038731	          UBA1875
+0.00	2	0	F	3071592	            CAIMLA01
+0.00	2	2	S	3071596	              CAIMLA01 sp903842085
+0.08	41	0	P	3000031	      Myxococcota_A
+0.08	41	0	C	3030142	        UBA796
+0.08	41	0	F	3030144	          SXON01
+0.08	41	0	G	3030155	            CAIUMM01
+0.08	41	41	S	3042026	              CAIUMM01 sp903900265
+0.03	19	0	P	3000034	      Bdellovibrionota
+0.01	6	0	C	3030505	        Oligoflexia
+0.01	6	0	O	3051988	          Oligoflexales
+0.01	6	0	F	3055923	            RGVZ01
+0.01	6	0	G	3055930	              CAIYRB01
+0.01	6	6	S	3055935	                CAIYRB01 sp016874735
+0.01	6	0	C	3030501	        Bdellovibrionia
+0.01	6	0	O	3030509	          Bdellovibrionales
+0.01	6	0	F	3030512	            UBA6776
+0.01	6	0	G	3037145	              RBG-16-40-8
+0.01	5	5	S	3054737	                RBG-16-40-8 sp001769925
+0.00	1	1	S	3054736	                RBG-16-40-8 sp903833275
+0.01	6	0	C	3030502	        Bacteriovoracia
+0.01	6	0	O	3041181	          Bacteriovoracales
+0.01	6	4	F	3041182	            Bacteriovoracaceae
+0.00	1	1	G	3041190	              DB6-IX
+0.00	1	0	G	3041186	              21-14-all-39-27
+0.00	1	1	S	3045048	                21-14-all-39-27 sp002786715
+0.00	1	0	C	3030503	        Bdellovibrionia_A
+0.00	1	1	O	3044484	          UBA1018
+0.02	12	0	P	3000008	      Acidobacteriota
+0.02	12	0	C	3012601	        Vicinamibacteria
+0.02	12	0	O	3032219	          Vicinamibacterales
+0.01	8	0	F	3039933	            SCN-69-37
+0.01	8	1	G	3046352	              SYFT01
+0.01	7	7	S	3046360	                SYFT01 sp016871335
+0.01	4	3	F	3039930	            UBA2999
+0.00	1	1	S	3039950	              UBA2999 sp002346475
+0.02	9	0	P	3000037	      Omnitrophota
+0.01	5	1	C	3031402	        Koll11
+0.00	2	2	O	3031420	          2-02-FULL-51-18
+0.00	1	1	O	3031415	          UBA10183
+0.00	1	0	O	3031410	          2-01-FULL-45-10
+0.00	1	0	G	3041697	            CAIMPC01
+0.00	1	1	S	3041706	              CAIMPC01 sp903843285
+0.01	4	0	C	3031403	        Omnitrophia
+0.01	4	0	O	3035932	          Omnitrophales
+0.01	4	2	F	3035936	            UBA2337
+0.00	2	0	G	3035948	              JACPXK01
+0.00	2	2	S	3075889	                JACPXK01 sp016196555
+0.01	8	1	P	3000024	      Nitrospinota
+0.01	7	0	C	3024742	        Nitrospinia
+0.01	7	0	O	3024747	          Nitrospinales
+0.01	7	4	F	3024748	            Nitrospinaceae
+0.01	3	3	G	3024749	              LS-NOB
+0.01	7	0	P	3000047	      WOR-3
+0.01	7	6	C	3035817	        UBA3073
+0.00	1	1	S	3062961	          UBA3073 sp002774315
+0.01	7	0	P	3000054	      Dependentiae
+0.01	7	0	C	3038826	        Babeliae
+0.01	7	2	O	3038827	          Babeliales
+0.01	5	0	F	3038832	            Chromulinavoraceae
+0.01	5	1	G	3056375	              Chromulinavorax
+0.01	3	3	S	3056379	                Chromulinavorax destructans
+0.00	1	1	S	3056378	                Chromulinavorax sp018062405
+0.01	3	0	P	3000038	      Latescibacterota
+0.01	3	1	C	3031543	        UBA2968
+0.00	1	0	O	3031548	          UBA8231
+0.00	1	0	G	3031563	            GCA-2693325
+0.00	1	1	S	3076398	              GCA-2693325 sp002693325
+0.00	1	0	G	3031549	          VXRD01
+0.00	1	1	S	3034084	            VXRD01 sp009838845
+0.00	2	0	P	3000029	      Desulfobacterota_I
+0.00	2	0	C	3027759	        Desulfovibrionia
+0.00	2	0	O	3027760	          Desulfovibrionales
+0.00	2	0	F	3027761	            Desulfovibrionaceae
+0.00	2	0	G	3027773	              Pseudodesulfovibrio
+0.00	1	1	S	3032702	                Pseudodesulfovibrio sp012516435
+0.00	1	1	S	3032690	                Pseudodesulfovibrio aespoeensis
+0.00	2	0	P	3000010	      Deinococcota
+0.00	2	0	C	188787	        Deinococci
+0.00	2	0	O	118964	          Deinococcales
+0.00	2	2	F	188786	            Thermaceae
+0.00	2	0	P	3000030	      Armatimonadota
+0.00	2	0	C	3028024	        Chthonomonadetes
+0.00	2	0	O	3034204	          Chthonomonadales
+0.00	2	0	F	3034206	            Chthonomonadaceae
+0.00	2	0	G	3047148	              CAIJLM01
+0.00	2	2	S	3054715	                CAIJLM01 sp903821495
+0.00	1	0	P	3000077	      Eisenbacteria
+0.00	1	0	C	3049971	        RBG-16-71-46
+0.00	1	0	O	3049972	          CAIMUX01
+0.00	1	1	S	3049990	            CAIMUX01 sp903844735
+0.00	1	0	P	3000151	      JAFGBW01
+0.00	1	1	S	3075566	        JAFGBW01 sp016932965
+0.00	1	0	P	3000018	      Firmicutes_B
+0.00	1	0	C	3022766	        Desulfitobacteriia
+0.00	1	0	O	3030884	          Desulfitobacteriales
+0.00	1	0	F	3030886	            Desulfitobacteriaceae
+0.00	1	0	G	3030892	              Desulfitobacterium_A
+0.00	1	1	S	3076698	                Desulfitobacterium_A metallireducens
+0.01	3	0	D	2157	    Archaea
+0.00	2	0	P	4000001	      Thermoproteota
+0.00	2	0	C	4000076	        Nitrososphaeria
+0.00	2	0	O	4000546	          Nitrososphaerales
+0.00	2	2	F	4000550	            Nitrosopumilaceae
+0.00	1	0	P	4000010	      Asgardarchaeota
+0.00	1	0	C	4001273	        Lokiarchaeia
+0.00	1	0	O	4001283	          CR-4
+0.00	1	0	F	4001285	            SOKP01
+0.00	1	1	S	4001309	              SOKP01 sp013375475
+0.00	1	0	D	2759	    Eukaryota
+0.00	1	0	D1	33154	      Opisthokonta
+0.00	1	0	K	33208	        Metazoa
+0.00	1	0	K1	6072	          Eumetazoa
+0.00	1	0	K2	33213	            Bilateria
+0.00	1	0	K3	33511	              Deuterostomia
+0.00	1	0	P	7711	                Chordata
+0.00	1	0	P1	89593	                  Craniata
+0.00	1	0	P2	7742	                    Vertebrata
+0.00	1	0	P3	7776	                      Gnathostomata
+0.00	1	0	P4	117570	                        Teleostomi
+0.00	1	0	P5	117571	                          Euteleostomi
+0.00	1	0	P6	8287	                            Sarcopterygii
+0.00	1	0	P7	1338369	                              Dipnotetrapodomorpha
+0.00	1	0	P8	32523	                                Tetrapoda
+0.00	1	0	P9	32524	                                  Amniota
+0.00	1	0	C	40674	                                    Mammalia
+0.00	1	0	C1	32525	                                      Theria
+0.00	1	0	C2	9347	                                        Eutheria
+0.00	1	0	C3	1437010	                                          Boreoeutheria
+0.00	1	0	C4	314146	                                            Euarchontoglires
+0.00	1	0	O	9443	                                              Primates
+0.00	1	0	O1	376913	                                                Haplorrhini
+0.00	1	0	O2	314293	                                                  Simiiformes
+0.00	1	0	O3	9526	                                                    Catarrhini
+0.00	1	0	O4	314295	                                                      Hominoidea
+0.00	1	0	F	9604	                                                        Hominidae
+0.00	1	0	F1	207598	                                                          Homininae
+0.00	1	0	G	9605	                                                            Homo
+0.00	1	1	S	9606	                                                              Homo sapiens

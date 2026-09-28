@@ -1,0 +1,101 @@
+77.71	6978	6978	U	0	unclassified
+22.29	2001	1	R	1	root
+22.27	2000	5	R1	131567	  cellular organisms
+22.19	1992	1619	D	2	    Bacteria
+2.98	268	81	P	1224	      Proteobacteria
+2.04	183	20	C	1236	        Gammaproteobacteria
+1.49	134	7	O	91347	          Enterobacterales
+1.38	124	0	F	3000312	            Shewanellaceae
+1.38	124	118	G	3008775	              Shewanella
+0.07	6	6	S	3008784	                Shewanella baltica
+0.03	3	2	F	543	            Enterobacteriaceae
+0.01	1	0	G	561	              Escherichia
+0.01	1	1	S	562	                Escherichia coli
+0.28	25	0	O	72274	          Pseudomonadales
+0.28	25	0	F	135621	            Pseudomonadaceae
+0.28	25	0	G	3001425	              Pseudomonas_A
+0.28	25	25	S	3006312	                Pseudomonas_A stutzeri_AB
+0.04	4	2	O	80840	          Burkholderiales
+0.02	2	2	F	119060	            Burkholderiaceae
+0.04	4	1	C	28211	        Alphaproteobacteria
+0.02	2	0	O	3003102	          Pelagibacterales
+0.02	2	0	F	3008942	            Pelagibacteraceae
+0.02	2	1	G	3008947	              IMCC9063
+0.01	1	1	S	3031612	                IMCC9063 sp000750175
+0.01	1	0	O	3003101	          Rhodobacterales
+0.01	1	1	F	3004881	            Rhodobacteraceae
+1.05	94	10	P	3000000	      Actinobacteriota
+0.92	83	75	C	1760	        Actinomycetia
+0.06	5	1	O	85009	          Propionibacteriales
+0.04	4	2	F	31957	            Propionibacteriaceae
+0.02	2	1	G	1912216	              Cutibacterium
+0.01	1	1	S	1747	                Cutibacterium acnes
+0.02	2	0	O	3000968	          Nanopelagicales
+0.02	2	0	F	3011459	            Nanopelagicaceae
+0.01	1	1	G	3011474	              Planktophila
+0.01	1	1	G	3011470	              MAG-120802
+0.01	1	1	O	3000966	          Mycobacteriales
+0.01	1	0	C	3000960	        Acidimicrobiia
+0.01	1	0	O	3016341	          Acidimicrobiales
+0.01	1	0	F	3016532	            Ilumatobacteraceae
+0.01	1	1	G	3024609	              BACL27
+0.06	5	0	P	3000004	      Bacteroidota
+0.06	5	1	C	200643	        Bacteroidia
+0.03	3	1	O	3004237	          Flavobacteriales
+0.01	1	0	F	3005703	            Schleiferiaceae
+0.01	1	1	G	3019322	              TMED14
+0.01	1	0	F	3005701	            Flavobacteriaceae
+0.01	1	1	G	3005733	              MAG-120531
+0.01	1	0	O	3004241	          Cytophagales
+0.01	1	0	F	3027939	            Cyclobacteriaceae
+0.01	1	0	G	3028733	              UBA4465
+0.01	1	1	S	3028784	                UBA4465 sp002470835
+0.03	3	0	P	3000005	      Verrucomicrobiota
+0.03	3	0	C	3005166	        Verrucomicrobiae
+0.02	2	0	O	3005172	          Methylacidiphilales
+0.01	1	0	F	3032709	            UBA3015
+0.01	1	1	S	3032715	              UBA3015 sp001438005
+0.01	1	0	F	3032711	            UBA1321
+0.01	1	1	G	3066705	              JABDGH01
+0.01	1	0	O	3005173	          Chthoniobacterales
+0.01	1	1	F	3037207	            JACTMZ01
+0.02	2	0	P	1117	      Cyanobacteria
+0.02	2	2	C	3009910	        Cyanobacteriia
+0.01	1	0	P	1239	      Firmicutes
+0.01	1	1	C	91061	        Bacilli
+0.02	2	0	D	2759	    Eukaryota
+0.02	2	0	D1	33154	      Opisthokonta
+0.02	2	0	K	33208	        Metazoa
+0.02	2	0	K1	6072	          Eumetazoa
+0.02	2	0	K2	33213	            Bilateria
+0.02	2	0	K3	33511	              Deuterostomia
+0.02	2	0	P	7711	                Chordata
+0.02	2	0	P1	89593	                  Craniata
+0.02	2	0	P2	7742	                    Vertebrata
+0.02	2	0	P3	7776	                      Gnathostomata
+0.02	2	0	P4	117570	                        Teleostomi
+0.02	2	0	P5	117571	                          Euteleostomi
+0.02	2	0	P6	8287	                            Sarcopterygii
+0.02	2	0	P7	1338369	                              Dipnotetrapodomorpha
+0.02	2	0	P8	32523	                                Tetrapoda
+0.02	2	0	P9	32524	                                  Amniota
+0.02	2	0	C	40674	                                    Mammalia
+0.02	2	0	C1	32525	                                      Theria
+0.02	2	0	C2	9347	                                        Eutheria
+0.02	2	0	C3	1437010	                                          Boreoeutheria
+0.02	2	0	C4	314146	                                            Euarchontoglires
+0.02	2	0	O	9443	                                              Primates
+0.02	2	0	O1	376913	                                                Haplorrhini
+0.02	2	0	O2	314293	                                                  Simiiformes
+0.02	2	0	O3	9526	                                                    Catarrhini
+0.02	2	0	O4	314295	                                                      Hominoidea
+0.02	2	0	F	9604	                                                        Hominidae
+0.02	2	0	F1	207598	                                                          Homininae
+0.02	2	0	G	9605	                                                            Homo
+0.02	2	2	S	9606	                                                              Homo sapiens
+0.01	1	0	D	2157	    Archaea
+0.01	1	0	P	4000010	      Asgardarchaeota
+0.01	1	0	C	4001273	        Lokiarchaeia
+0.01	1	0	O	4001283	          CR-4
+0.01	1	0	F	4001285	            SOKP01
+0.01	1	1	S	4001309	              SOKP01 sp013375475

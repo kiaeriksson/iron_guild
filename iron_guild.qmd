@@ -1,0 +1,411 @@
+---
+title: "iron guild"
+author: "Karolina Eriksson"
+format: html
+editor: visual
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Choose raw read threshold and read files
+
+Kraken output explained (information from [https://ccb.jhu.edu/software/kraken/MANUAL.html#output-formathttps://ccb.jhu.edu/software/kraken/MANUAL.html#output-format](https://ccb.jhu.edu/software/kraken/MANUAL.html#output-format) ):
+
+To give some guidance toward selecting an appropriate threshold, we show here the results of different thresholds on the MiSeq metagenome from the Kraken paper (see the paper for more details; note that the database used here is more recent than that used in the paper). Precision, sensitivity, and F-score are measured at the genus rank.
+
+With no threshold (i.e., Kraken's original labels), Kraken's precision is fairly high, but it does increase with the threshold. Diminishing returns apply, however, and there is a loss in sensitivity that must be taken into account when deciding on the threshold
+
+Thres Prec Sens F-score
+
+0 95.43 77.32 85.43
+
+0.05 97.28 76.31 85.53
+
+0.10 98.25 75.13 85.15
+
+0.15 98.81 73.87 84.54
+
+0.20 99.13 72.82 83.96
+
+```{r read}
+
+library(ggplot2)
+library(tidyverse)
+library(wesanderson)
+
+#C:
+path_in <- "/Users/kaer0069/Documents/Post doc - Karolina Eriksson/4 PhD chapter/R/nanopore_kraken_rawreads/reports2023_08_29/"
+
+#Path to save files
+path_out <- "/Users/kaer0069/Documents/Post doc - Karolina Eriksson/4 PhD chapter/R/output/"
+
+filelist = list.files(path_in, pattern = "_kraken2_rawreads_0.024.report") #0.005
+list_names <- sapply(strsplit(basename(filelist), "_kraken"), `[`, 1)
+
+datalist_test1 = lapply(filelist, 
+                  function(x) {
+                    table <- read.table(paste(path_in,x,sep=""),sep="\t",header=F)
+                    table$sample <- sapply(strsplit(basename(x), "_kraken"), `[`, 1)
+                    return(table)} )
+
+#Make dataframe, need the same header/columns for all files
+datafr1 = do.call("rbind", datalist_test1) 
+
+write.table(datafr1 , paste0(path_out,"16S_kraken0.024.txt"), sep = "\t", quote = FALSE, row.names = FALSE)
+
+```
+
+Read dataframes
+
+Read tax table that was recently built from this dataset (kraken0.0)
+
+```{r dataframes}
+#Read dataframe
+DF <- as.data.frame(read.table(paste(path_out,"16S_kraken0.024.txt",sep=""),sep="\t",row.names = NULL, na.strings  = "",header = TRUE))
+
+tax_table <- as.data.frame(read.table(paste(path_out,"tax_table.txt",sep=""),sep="\t",row.names = NULL, na.strings  = "",header = TRUE)) %>%
+  #Remove blank characters
+    mutate(Taxa = gsub("^[[:space:]]*", "", Taxa)) %>%
+    mutate(Genus = gsub("^[[:space:]]*", "", Genus)) %>%
+    mutate(Family = gsub("^[[:space:]]*", "", Family)) %>%
+    mutate(Order = gsub("^[[:space:]]*", "", Order)) %>%
+    mutate(Class = gsub("^[[:space:]]*", "", Class)) %>%
+    mutate(Phylum = gsub("^[[:space:]]*", "", Phylum)) 
+
+```
+
+Ad experimental information and taxonomic information
+
+```{r expinfo}
+
+#As numeric V1-V3
+DF$V1 <- as.numeric(DF$V1)
+DF$V2 <- as.numeric(DF$V2)
+DF$V3 <- as.numeric(DF$V3)
+
+
+DF_exp <- DF %>%
+  #Rename V1-V6 columns to descriptive 
+  rename(percentage = V1,
+         reads_clade = V2,
+         reads_taxon = V3,
+         rank_code = V4,
+         NCBI_taxonomy_ID = V5,
+         Taxa = V6
+         ) %>%
+  #Name after experiment
+  mutate(experiment = case_when(
+    grepl("E", sample) ~ "Incubation end",
+    grepl("S", sample) ~ "Incubation start",
+    grepl("DOC", sample) ~ "Fe and DOC",
+    grepl("_to_", sample) ~ "Fe and DOC",
+    grepl("Fe", sample) ~ "Fe and DOC",
+    grepl("11", sample) ~ "Fe and DOC",
+    grepl("15.7", sample) ~ "Fe and DOC",
+    grepl("6.3", sample) ~ "Fe and DOC",
+    grepl("noll", sample) ~ "Fe and DOC",
+    grepl("5_20", sample) ~ "Fe and DOC",
+    )) %>% 
+  replace_na(list(experiment = "Fe gradient")) %>%
+#Name after treatment and D1 vs D4
+  mutate(treatment = case_when(
+    grepl("D1", sample) ~ "Day 1",
+    grepl("D4", sample) ~ "Day 4",
+    
+    grepl("S1_", sample) ~ "Control 200µm",
+    grepl("E1_", sample) ~ "Control 200µm",
+    grepl("E2_", sample) ~ "Control 200µm",
+    grepl("E3_", sample) ~ "Control 200µm",
+    grepl("S2_", sample) ~ "Control 1.6µm",
+    grepl("E4_", sample) ~ "Control 1.6µm",
+    grepl("E5_", sample) ~ "Control 1.6µm",
+    grepl("E6_", sample) ~ "Control 1.6µm",
+    
+    grepl("S3_", sample) ~ "Plankton 200µm",
+    grepl("E7_", sample) ~ "Plankton 200µm",
+    grepl("E8_", sample) ~ "Plankton 200µm",
+    grepl("E9_", sample) ~ "Plankton 200µm",
+    grepl("S4_", sample) ~ "Plankton 1.6µm",
+    grepl("E10_", sample) ~ "Plankton 1.6µm",
+    grepl("E11_", sample) ~ "Plankton 1.6µm",
+    grepl("E12_", sample) ~ "Plankton 1.6µm",
+    
+    grepl("S5_", sample) ~ "Soil 200µm",
+    grepl("E13_", sample) ~ "Soil 200µm",
+    grepl("E14_", sample) ~ "Soil 200µm",
+    grepl("E15_", sample) ~ "Soil 200µm",
+    grepl("S6_", sample) ~ "Soil 1.6µm",
+    grepl("E16_", sample) ~ "Soil 1.6µm",
+    grepl("E17_", sample) ~ "Soil 1.6µm",
+    grepl("E18_", sample) ~ "Soil 1.6µm",
+    )) %>% 
+  replace_na(list(treatment = "Day 4")) 
+
+
+```
+
+Sort by species
+
+```{r taxainfo}
+
+#Sort by Species 
+DF_S <- DF_exp %>%    
+  filter(rank_code == "S")  %>%
+  #Remove blank characters
+    mutate(Taxa = gsub("^[[:space:]]*", "", Taxa))
+
+#Ad taxonomic information
+DF_S <- merge(DF_S, tax_table, by = "Taxa")
+
+```
+
+Identify background contamination level
+
+```{r contamination}
+
+#In my manually written lab book notes (from 2023-08-22), sample Filterblank and June AN-3 (An especially interesting sample from another study that needed to be sequenced) might have been mixed up in the sample processing during the preparation for lohng read 16S sequencing. Find out if that is the case by plotting Filterblank1, Filterblank2 and JUNE AN-3 together, and compare to other samples in the Fe gradient incubation.
+
+contaminating_taxa <-  DF_S %>% 
+  #Sort out Iron incubation experiment
+  filter(experiment == "Fe gradient") %>%
+  #Sort out control samples for contaminating taxa
+  filter(sample %in% c("Filterblank1","Filterblank2", "June_AN-3", "Blank", "Blank2", "D4_Blank", "D4_10", "D4_20", "D4_60"))
+
+#put into a vector so can plot only top taxa
+t <- contaminating_taxa %>% 
+  group_by(Taxa) %>% 
+  summarise(n = sum(percentage)) %>% 
+  slice_max(n, n = 50) %>% 
+  pull(Taxa)
+
+topp <- contaminating_taxa %>% 
+  mutate(top = ifelse(Taxa %in% t, Taxa, "Z Other"))
+
+topp %>% 
+  mutate(top = ifelse(Taxa %in% t, Taxa, "Z Other")) %>%
+  ggplot(aes(fill=top, y=percentage, x=sample)) +
+  facet_grid(~factor(treatment), scales = "free_x") + #set for all
+  geom_bar(position="stack", stat="identity") + 
+  theme(legend.position = "none")  + 
+  theme(axis.title.x=element_blank(), legend.title = element_blank(),
+        axis.text.x=element_text(size = 10, angle=90, hjust =0.5,vjust=0)) +
+  scale_y_continuous(name="")  +
+ # theme(legend.spacing.y = unit(1, "mm")) +
+ # scale_fill_manual(values = c("#FFB6C1","#A2A475",   "#87CEEB", "#E6E6FA", "#98FB98","#C27D38", "#C8A2C8","#02401B",  "#89CFF0", "#98FB98", "#F08080","#D8B70A", "#FFD700",  "#FFDAB9","#972D15", "#29211F", "#FFFF99","#D69C4E",  "#CCC591",  "#00A08A", "grey")) +
+ ggtitle("Filter blanks") 
+
+#Conclusion from kraken output 0.0: It appears as if I accidentally pipetted into the wrong well and mixed sample Filterblank2 and June_AN-3 together. Of the 50 top species, the composition is very similar, the number of reads is also similar (about 40000 vs 30000 respectively). Filterblank2 should thus be excluded. Use Filterblank1 and Blank samples (PCR blanks) to establish the background contamination levels.
+
+background_taxa <-  DF_S %>% 
+  #Sort out Iron incubation experiment
+  filter(experiment == "Fe gradient") %>%
+  #Sort out control samples for contaminating taxa
+  filter(sample %in% c("Filterblank1", "Blank", "Blank2", "D4_Blank"))
+
+```
+
+Identify iron resistant bacteria
+
+```{r ironguild}
+
+
+ironguild <- DF_S %>%
+  #Sort out Iron incubation experiment
+  filter(experiment == "Fe gradient") %>%
+  #Remove blank samples
+  filter(!(sample %in% c("Filterblank1","Filterblank2", "Blank", "Blank2", "D4_Blank", "June_AN-3"))) %>% 
+  #to be able to extract information of the iron concentration for each sample
+  mutate(Iron = str_extract(sample, "(?<=_).*")) %>% 
+  #Set the concentration of the NaCL control samples to iron concentration = 0
+  mutate(Iron = ifelse(sample %in% c("D1_NaCl_31","D1_NaCl_188","D4_NaCl_31","D4_NaCl_188"), 0, as.numeric(Iron)))
+
+#Before: sorted taxa average abundance >= 0.1 percentage
+#Looking at the data it seem more robust to choose from number of reads assigned to the taxon at species level. It varies a lot at 0.1 percentage. 
+#Try 30 reads, not many blank samples have that many reads, not for any relevant species anyway. Conclusion: Doing this gives hundreds of species to work with.
+certain_species <- ironguild %>%
+  group_by(Taxa) %>%
+  filter(reads_taxon >= 20) 
+  #summarize(average_percentage = mean(percentage)) %>%
+  #filter(average_percentage >= 0.1) 
+  
+# Fit the linear regression model
+certain_stats <- ironguild %>% filter(Taxa %in% certain_species$Taxa) %>% 
+  group_by(Taxa) %>%
+  # Exclude rows with NAs, removes D1_0_bc where iron is NA
+    filter(!is.na(Iron) & !is.na(percentage)) %>%   
+  summarize(R_squared = summary(lm(Iron ~ reads_taxon))$r.squared)
+
+# Filter species with R-squared above 0.5
+filtered_species <- certain_stats %>%
+  filter(R_squared >= 0.5)
+
+#plot those with R2 more than 0.5
+#png(res = 400, units = "cm", width = 10, height = 10, filename = paste(path_out,"All_lm_0.5_rel_0.1.png",sep=""))
+lm_plot <- ironguild %>% 
+  filter(Taxa %in% filtered_species$Taxa) %>% 
+  ggplot(aes(Iron, reads_taxon, color = Taxa)) +
+  geom_point(size = 2.5) +
+  geom_smooth(method = "lm", se = FALSE) +  # Setting se to FALSE removes the confidence interval shading
+  labs(x = "Iron (mg/L)", y = "Relative abundance") +
+  theme_bw(base_size = 7) +
+ # scale_y_continuous(limits = c(-0.0, 2)) +
+  theme(legend.spacing.y = unit(1, "mm")) +
+ # scale_color_manual(values = c("#FFB6C1","#A2A475",   "#87CEEB", "#E6E6FA", "#98FB98","#C27D38", "#C8A2C8","#02401B",  "#89CFF0", "#98FB98", "#F08080","#D8B70A", "#FFD700",  "#FFDAB9","#972D15", "#29211F", "#FFFF99","#D69C4E",  "#CCC591",  "#00A08A", "grey")) +
+  theme(
+    panel.background = element_blank(),
+    panel.border = element_rect(fill = NA, size = 0.75),
+    panel.grid = element_blank() 
+  ) ;lm_plot
+
+
+
+
+
+
+#Exclude taxa that are present in blank samples
+  
+#Select iron guild
+#combination of: 
+#minimum read support + fold above negative-control background + repeated detection + high-Fe occurrence + taxonomic assignment confidence.
+```
+
+Venn diagram
+
+```{r venn_iron}
+
+library(ggvenn)
+
+# Extract the unique bacteria (taxa) for each predator status
+high_iron_taxa <- ironguild %>%
+  filter(Iron %in% c(#"20" , 
+                     "60")) %>%
+  filter(reads_taxon >= 30) %>%
+  pull(Taxa) %>%
+  unique()
+
+low_iron_taxa <- ironguild %>%
+  filter(!(Iron %in% c(#"20" , 
+                       "60"))) %>%
+  filter(reads_taxon >= 30) %>%
+  pull(Taxa) %>%
+  unique()
+
+background <- background_taxa %>%
+  pull(Taxa) %>%
+  unique()
+
+# Create a list with the sets of taxa
+venn_data <- list(
+  "High Iron" = high_iron_taxa,
+  "Low Iron" = low_iron_taxa,
+  "Background taxa" = background
+)
+
+# Plot the Venn diagram using ggvenn
+venn_plot <- ggvenn(venn_data, fill_color = c("#E69F00", "#56B4E9", "grey")) ; venn_plot
+
+```
+
+Day 1 vs Day 4 and High vs Low Iron
+
+A comparison **four-way**:
+
+|         | Day 1 | Day 4 |
+|---------|-------|-------|
+| Low Fe  | A     | B     |
+| High Fe | C     | D     |
+
+Where:
+
+- **A = starting community**
+
+- **B = community after 4 days without severe Fe stress**
+
+- **C = immediate Fe response**
+
+- **D = community after 4 days of Fe stress**
+
+```{r venn_day}
+
+library(ggvenn)
+
+# Extract the unique bacteria (taxa) for each condition
+
+D1_low_iron_taxa <- ironguild %>%
+  filter(!(Iron %in% c("20" , 
+                       "60"))) %>%
+  filter(treatment == "Day 1") %>%
+  #filter(reads_taxon >= 30) %>%
+  pull(Taxa) %>%
+  unique()
+
+D4_low_iron_taxa <- ironguild %>%
+  filter(!Iron %in% c("20" , 
+                     "60")) %>%
+  filter(treatment == "Day 4") %>%
+  #filter(reads_taxon >= 30) %>%
+  pull(Taxa) %>%
+  unique()
+
+D1_high_iron_taxa <- ironguild %>%
+  filter((Iron %in% c("20" , 
+                       "60"))) %>%
+  filter(treatment == "Day 1") %>%
+  #filter(reads_taxon >= 30) %>%
+  pull(Taxa) %>%
+  unique()
+
+D4_high_iron_taxa <- ironguild %>%
+  filter(Iron %in% c("20" , 
+                     "60")) %>%
+  filter(treatment == "Day 4") %>%
+  #filter(reads_taxon >= 30) %>%
+  pull(Taxa) %>%
+  unique()
+
+background <- background_taxa %>%
+  pull(Taxa) %>%
+  unique()
+
+# Create a list with the sets of taxa
+venn_data <- list(
+  "D1 Low Iron" = D1_low_iron_taxa,
+  "D4 Low Iron" = D4_low_iron_taxa,
+  
+  "D1 High Iron" = D1_high_iron_taxa,
+  "D4 High Iron" = D4_high_iron_taxa,
+  "Background taxa" = background
+)
+
+# Plot the Venn diagram using ggvenn
+venn_plot <- ggvenn(venn_data, fill_color = c("lightgray","darkgrey","#D6543E","darkred", "white"  )) ; venn_plot 
+
+
+#Filter out only the taxa found in both conditions
+high_iron_persistent <- intersect(
+  D1_high_iron_taxa,
+  D4_high_iron_taxa)
+
+D1_high_exclusive <- setdiff(
+  D1_high_iron_taxa,
+  union(D1_low_iron_taxa, D4_low_iron_taxa)
+)
+  
+ironguild_persistent <- ironguild %>%
+  filter(Taxa %in% high_iron_persistent)
+```
+
+Iron guild table
+
+| Taxon | Current status | Why retain? |
+|----|----|----|
+| *P. aeruginosa* | **Core** | Very strong Fe response + known pathogen |
+| *Mycobacterium* sp018401645 | **Core** | Strong Fe response |
+| SOKP01 sp013375475 | **Core** | Strong Fe persistence + low background |
+| *Salmonella enterica* | **Candidate/core pending analysis** | Known pathogen, repeated low-abundance detection |
+| *Klebsiella pneumoniae* | **Candidate** | Known pathogen, repeated detection |
+| *M. tuberculosis*-classified | **Rare candidate** | Highly interesting but extremely low read support |
+| *V. cholerae*-classified | **Rare candidate** | Interesting, but very low signal + blank detection |
+| *Francisella*-classified | **Rare candidate** | Potentially very interesting Fe60-specific signal |

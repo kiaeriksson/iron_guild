@@ -1,0 +1,905 @@
+---
+title: "Untitled"
+author: "Karolina"
+date: "2024-10-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r readfiles, include=FALSE}
+
+library(ggplot2)
+library(tidyverse)
+library(wesanderson)
+
+#C:
+path_in <- "/Users/kaer0069/Documents/Post doc - Karolina Eriksson/4 PhD chapter/R/nanopore_kraken_rawreads/reports2023_08_29/"
+
+#Path to save files
+path_out <- "/Users/kaer0069/Documents/Post doc - Karolina Eriksson/4 PhD chapter/R/output/"
+
+filelist = list.files(path_in, pattern = "_kraken2_rawreads_0.0.report")
+list_names <- sapply(strsplit(basename(filelist), "_kraken"), `[`, 1)
+
+datalist_test1 = lapply(filelist, 
+                  function(x) {
+                    table <- read.table(paste(path_in,x,sep=""),sep="\t",header=F)
+                    table$sample <- sapply(strsplit(basename(x), "_kraken"), `[`, 1)
+                    return(table)} )
+
+#Make dataframe, need the same header/columns for all files
+datafr1 = do.call("rbind", datalist_test1) 
+write.table(datafr1 , paste0(path_out,"16S_kraken0.0.txt"), sep = "\t", quote = FALSE, row.names = FALSE)
+
+```
+
+### Build taxonomy table
+
+```{r}
+
+#Read dataframe
+DF <- as.data.frame(read.table(paste(path_out,"16S_kraken0.0.txt",sep=""),sep="\t",row.names = NULL, na.strings  = "",header = TRUE))
+
+taxonomy_df <- cbind(DF$V4, DF$V6)
+colnames(taxonomy_df) <- c("Rank", "Taxa")
+taxonomy_df <- as.data.frame(taxonomy_df)
+taxonomy_df$Species <- taxonomy_df$Taxa
+test_set <- as.data.frame(taxonomy_df) #testset: [1:6000,c(1,2)]
+species_df <- as.data.frame(test_set) %>%
+  filter(Rank == "S") %>%
+  distinct(Taxa)
+  
+################
+
+# Find each taxonomic rank and save in new column
+
+############ Initialize an empty vector to store the matching genera
+matching_genera <- character(0)
+# Loop over each genus in species_df
+for (i in 1:nrow(species_df)) {
+  # Get the current species
+  species <- species_df$Taxa[i]
+  # Find all matching rows in test_set
+  matching_rows <- which(test_set$Rank == "S" & test_set$Taxa == species)
+  # Initialize a variable to store the family
+  genus <- ""
+  # Check if any matching rows were found
+  if (length(matching_rows) > 0) {
+    # Choose the first matching row
+    index <- matching_rows[1]
+    # Keep moving up through the rows until an "G" is found
+    while (index > 1 && test_set$Rank[index - 1] != "G") {
+      index <- index - 1
+    }
+    # Check if a family ("F") was found
+    if (index > 1) {
+      genus <- test_set$Taxa[index - 1]
+    }
+  }
+  # Append the matching family to the vector
+  matching_genera <- c(matching_genera, genus)
+}
+
+# Add the matching families to the species_df
+species_df$Genus <- matching_genera
+
+#----------------------------------------
+#----------------------------------------
+
+############ Initialize an empty vector to store the matching families
+matching_families <- character(0)
+# Loop over each genus in species_df
+for (i in 1:nrow(species_df)) {
+  # Get the current genus
+  genus <- species_df$Genus[i]
+  # Find all matching rows in test_set
+  matching_rows <- which(test_set$Rank == "G" & test_set$Taxa == genus)
+  # Initialize a variable to store the family
+  family <- ""
+  # Check if any matching rows were found
+  if (length(matching_rows) > 0) {
+    # Choose the first matching row
+    index <- matching_rows[1]
+    # Keep moving up through the rows until an "F" is found
+    while (index > 1 && test_set$Rank[index - 1] != "F") {
+      index <- index - 1
+    }
+    # Check if a family ("F") was found
+    if (index > 1) {
+      family <- test_set$Taxa[index - 1]
+    }
+  }
+  # Append the matching family to the vector
+  matching_families <- c(matching_families, family)
+}
+
+# Add the matching families to the species_df
+species_df$Family <- matching_families
+
+#----------------------------------------
+
+##### Initialize an empty vector to store the matching orders
+matching_orders <- character(0)
+
+# Loop over each family in species_df
+for (i in 1:nrow(species_df)) {
+  # Get the current family
+  family <- species_df$Family[i]
+  
+  # Find all matching rows in test_set
+  matching_rows <- which(test_set$Rank == "F" & test_set$Taxa == family)
+  
+  # Initialize a variable to store the order
+  order <- ""
+  
+  # Check if any matching rows were found
+  if (length(matching_rows) > 0) {
+    # Choose the first matching row
+    index <- matching_rows[1]
+    
+    # Keep moving up through the rows until an "O" is found
+    while (index > 1 && test_set$Rank[index - 1] != "O") {
+      index <- index - 1
+    }
+    
+    # Check if an order ("O") was found
+    if (index > 1) {
+      order <- test_set$Taxa[index - 1]
+    }
+  }
+  
+  # Append the matching order to the vector
+  matching_orders <- c(matching_orders, order)
+}
+
+# Add the matching orders to the species_df
+species_df$Order <- matching_orders
+
+#----------------------------------------
+
+#### Initialize an empty vector to store the matching classes
+# Initialize an empty vector to store the matching classes
+matching_classes <- character(0)
+
+# Loop over each order in species_df
+for (i in 1:nrow(species_df)) {
+  # Get the current order
+  order <- species_df$Order[i]
+  
+  # Find all matching rows in test_set
+  matching_rows <- which(test_set$Rank == "O" & test_set$Taxa == order)
+  
+  # Initialize a variable to store the class
+  class <- ""
+  
+  # Check if any matching rows were found
+  if (length(matching_rows) > 0) {
+    # Choose the first matching row
+    index <- matching_rows[1]
+    
+    # Keep moving up through the rows until a "C" is found
+    while (index > 1 && test_set$Rank[index - 1] != "C") {
+      index <- index - 1
+    }
+    
+    # Check if a class ("C") was found
+    if (index > 1) {
+      class <- test_set$Taxa[index - 1]
+    }
+  }
+  
+  # Append the matching class to the vector
+  matching_classes <- c(matching_classes, class)
+}
+
+# Add the matching classes to the species_df
+species_df$Class <- matching_classes
+
+#---------------------------------
+
+# Initialize an empty vector to store the matching phyla
+matching_phyla <- character(0)
+
+# Loop over each class in species_df
+for (i in 1:nrow(species_df)) {
+  # Get the current class
+  class <- species_df$Class[i]
+  
+  # Find all matching rows in test_set
+  matching_rows <- which(test_set$Rank == "C" & test_set$Taxa == class)
+  
+  # Initialize a variable to store the phylum
+  phylum <- ""
+  
+  # Check if any matching rows were found
+  if (length(matching_rows) > 0) {
+    # Choose the first matching row
+    index <- matching_rows[1]
+    
+    # Keep moving up through the rows until a "P" is found
+    while (index > 1 && test_set$Rank[index - 1] != "P") {
+      index <- index - 1
+    }
+    
+    # Check if a phylum ("P") was found
+    if (index > 1) {
+      phylum <- test_set$Taxa[index - 1]
+    }
+  }
+  
+  # Append the matching phylum to the vector
+  matching_phyla <- c(matching_phyla, phylum)
+}
+
+# Add the matching phyla to the species_df
+species_df$Phylum <- matching_phyla
+
+#---------------------------------------------
+
+species_df1 <- mutate(species_df, Taxa = gsub("^[[:space:]]*", "", Taxa))
+
+#Save taxonomy table
+write.table(species_df1 , paste0(path_out,"tax_table.txt"), sep = "\t", quote = FALSE, row.names = FALSE)
+
+```
+### Ad experimental information
+```{r}
+#####################################
+
+#     All species
+
+#####################################
+
+library(ggplot2)
+library(tidyverse)
+library(wesanderson)
+
+#Path to save files
+path_out <- "/Users/kaer0069/Documents/Post doc - Karolina Eriksson/4 PhD chapter/R/output/"
+
+#Read dataframe
+DF <- as.data.frame(read.table(paste(path_out,"16S_kraken0.0.txt",sep=""),sep="\t",row.names = NULL, na.strings  = "",header = TRUE))
+#nodes <- as.data.frame(read.table(paste(path_out,"nodes.dmp",sep=""),sep="\t",row.names = NULL, na.strings  = "",header = FALSE))
+#names <- as.data.frame(read.table(paste(path_out,"names.dmp",sep=""),sep="\t",row.names = NULL, na.strings  = "",header = FALSE))
+
+#As numeric V1-V3
+DF$V1 <- as.numeric(DF$V1)
+DF$V2 <- as.numeric(DF$V2)
+DF$V3 <- as.numeric(DF$V3)
+
+#Namnge efter experiment
+DF_exp <- DF %>%
+  mutate(experiment = case_when(
+    grepl("E", sample) ~ "Incubation end",
+    grepl("S", sample) ~ "Incubation start",
+    grepl("DOC", sample) ~ "Fe and DOC",
+    grepl("_to_", sample) ~ "Fe and DOC",
+    grepl("Fe", sample) ~ "Fe and DOC",
+    grepl("11", sample) ~ "Fe and DOC",
+    grepl("15.7", sample) ~ "Fe and DOC",
+    grepl("6.3", sample) ~ "Fe and DOC",
+    grepl("noll", sample) ~ "Fe and DOC",
+    grepl("5_20", sample) ~ "Fe and DOC",
+    )) %>% 
+  replace_na(list(experiment = "Fe gradient")) 
+#Namnge efter treatment och D1 vs D4
+DF_exp <- DF_exp %>%
+  mutate(treatment = case_when(
+    grepl("D1", sample) ~ "Day 1",
+    grepl("D4", sample) ~ "Day 4",
+    
+    grepl("S1_", sample) ~ "Control 200µm",
+    grepl("E1_", sample) ~ "Control 200µm",
+    grepl("E2_", sample) ~ "Control 200µm",
+    grepl("E3_", sample) ~ "Control 200µm",
+    grepl("S2_", sample) ~ "Control 1.6µm",
+    grepl("E4_", sample) ~ "Control 1.6µm",
+    grepl("E5_", sample) ~ "Control 1.6µm",
+    grepl("E6_", sample) ~ "Control 1.6µm",
+    
+    grepl("S3_", sample) ~ "Plankton 200µm",
+    grepl("E7_", sample) ~ "Plankton 200µm",
+    grepl("E8_", sample) ~ "Plankton 200µm",
+    grepl("E9_", sample) ~ "Plankton 200µm",
+    grepl("S4_", sample) ~ "Plankton 1.6µm",
+    grepl("E10_", sample) ~ "Plankton 1.6µm",
+    grepl("E11_", sample) ~ "Plankton 1.6µm",
+    grepl("E12_", sample) ~ "Plankton 1.6µm",
+    
+    grepl("S5_", sample) ~ "Soil 200µm",
+    grepl("E13_", sample) ~ "Soil 200µm",
+    grepl("E14_", sample) ~ "Soil 200µm",
+    grepl("E15_", sample) ~ "Soil 200µm",
+    grepl("S6_", sample) ~ "Soil 1.6µm",
+    grepl("E16_", sample) ~ "Soil 1.6µm",
+    grepl("E17_", sample) ~ "Soil 1.6µm",
+    grepl("E18_", sample) ~ "Soil 1.6µm",
+    )) %>% 
+  replace_na(list(treatment = "Day 4")) 
+
+
+
+#exactly P (Phylum)
+DF_p <- DF_exp %>% filter(V4 == "P") %>% 
+  mutate(V6 = gsub("\\s+", "", V6))
+
+
+#Gammaproteobact
+DF_gamma <- DF_exp[agrep("Gammaproteobacteria", DF_exp$V6) , ] %>% 
+  mutate(V6 = gsub("\\s+", "", V6))
+
+
+#Remove blankspace from phylum name, put into a vector so can plot only top ones
+t <- DF_p %>% group_by(V6) %>% summarise(n = sum(V1)) %>% slice_max(n, n = 9) %>% pull(V6)
+topp <- DF_p %>% mutate(top = ifelse(V6 %in% t, V6, "Z Other"))
+
+#Species
+DF_s <- DF_exp[agrep("S", DF_exp$V4) , ] %>% 
+  mutate(V6 = gsub("^[[:space:]]*", "", V6)) %>%
+  filter(V4 == "S")
+
+#Read tax table
+species_df1 <- as.data.frame(read.table(paste(path_out,"tax_table.txt",sep=""),sep="\t",row.names = NULL, na.strings  = "",header = TRUE))
+
+# Merge the dataframes based on the "Taxa" column
+DF_s$Taxa <- DF_s$V6
+merged_df <- merge(DF_s, species_df1, by = "Taxa",  all.x = FALSE) %>%
+    mutate(Genus = gsub("^[[:space:]]*", "", Genus)) %>%
+    mutate(Family = gsub("^[[:space:]]*", "", Family)) %>%
+    mutate(Order = gsub("^[[:space:]]*", "", Order)) %>%
+    mutate(Class = gsub("^[[:space:]]*", "", Class)) %>%
+    mutate(Phylum = gsub("^[[:space:]]*", "", Phylum)) 
+
+#Gammaproteobacteria
+#DF_gamma1 <- merged_df[agrep("Gammaproteobacteria", merged_df$Class) , ] 
+
+```
+
+## lm Iron persistent bact
+
+
+```{r ironbact}
+
+certain_species <- merged_df %>%
+  #filter(Order == "Burkholderiales") %>%
+  filter(experiment == "Fe gradient") %>%
+  filter(!(sample %in% c("Filterblank1","Filterblank2", "Blank", "Blank2", "D4_Blank", "June_AN-3"))) %>% #, "AN-3", "Filterblank2"
+  mutate(Iron = str_extract(sample, "(?<=_).*")) %>% 
+  mutate(Iron = ifelse(sample %in% c("D1_NaCl_31","D1_NaCl_188","D4_NaCl_31","D4_NaCl_188"), 0, as.numeric(Iron)))
+
+#sort taxa average abundance >0.1
+certain_species0.1<- certain_species %>%
+  group_by(Taxa) %>%
+  summarize(Average_V1 = mean(V1)) %>%
+  filter(Average_V1 > 0.1) 
+
+# Fit the linear regression model
+certain_stats <- certain_species %>% filter(Taxa %in% certain_species0.1$Taxa) %>% 
+  group_by(Taxa) %>%
+  filter(!is.na(Iron) & !is.na(V1)) %>%   # Exclude rows with NAs, removes D1_0_bc where iron is NA
+  summarize(R_squared = summary(lm(Iron ~ V1))$r.squared)
+
+# Filter species with R-squared above 0.5
+filtered_species <- certain_stats %>%
+  filter(R_squared > 0.5)
+
+#plot those with R2 more than 0.5
+#png(res = 400, units = "cm", width = 10, height = 10, filename = paste(path_out,"All_lm_0.5_rel_0.1.png",sep=""))
+lm_plot <- certain_species %>% 
+  filter(Taxa %in% filtered_species$Taxa) %>% 
+  ggplot(aes(Iron, V1, color = Taxa)) +
+  geom_point(size = 2.5) +
+  geom_smooth(method = "lm", se = FALSE) +  # Setting se to FALSE removes the confidence interval shading
+  labs(x = "Iron (mg/L)", y = "Relative abundance") +
+  theme_bw(base_size = 7) +
+ # scale_y_continuous(limits = c(-0.0, 2)) +
+  theme(legend.spacing.y = unit(1, "mm")) +
+  scale_color_manual(values = c("#FFB6C1","#A2A475",   "#87CEEB", "#E6E6FA", "#98FB98","#C27D38", "#C8A2C8","#02401B",  "#89CFF0", "#98FB98", "#F08080","#D8B70A", "#FFD700",  "#FFDAB9","#972D15", "#29211F", "#FFFF99","#D69C4E",  "#CCC591",  "#00A08A", "grey")) +
+  theme(
+    panel.background = element_blank(),
+    panel.border = element_rect(fill = NA, size = 0.75),
+    panel.grid = element_blank() 
+  ) ;lm_plot
+#dev.off()
+
+#ggsave(filename = paste(path_out,"All_lm_0.5_rel_0.1.png",sep=""), lm_plot)
+
+iron_persistant_tax <- merged_df %>%    filter(Taxa %in% filtered_species$Taxa) %>% distinct(Taxa, .keep_all = TRUE)
+#write.table(iron_persistant_tax, paste0(path_out,"iron_persistant_tax.txt"), sep = "\t", quote = FALSE, row.names = FALSE)
+
+
+```
+
+## Incubation Plot
+
+
+```{r incplot, fig.height=8}
+iron_persistant_tax_all <- merged_df %>%
+    filter(Taxa %in% filtered_species$Taxa)
+
+inc_plot <- iron_persistant_tax_all %>% filter(grepl("Incubation",experiment)) %>%
+  #filter(V1 != 0) %>%
+  ggplot(aes(fill=Taxa, y=V1, x=sample)) +
+  facet_grid(~factor(treatment), scales = "free_x") + #set for all
+  geom_bar(position="stack", stat="identity") + 
+  theme(legend.position = "bottom")  + 
+  theme(axis.title.x=element_blank(), legend.title = element_blank(),
+        axis.text.x=element_text(size = 4, angle=90, hjust =0.5,vjust=0)) +
+  scale_y_continuous(name="Relative abundance")  +
+  theme(legend.spacing.y = unit(1, "mm")) +
+  scale_fill_manual(values = c("#FFB6C1","#A2A475",   "#87CEEB", "#E6E6FA", "#98FB98","#C27D38", "#C8A2C8","#02401B",  "#89CFF0", "#98FB98", "#F08080","#D8B70A", "#FFD700",  "#FFDAB9","#972D15", "#29211F", "#FFFF99","#D69C4E",  "#CCC591",  "#00A08A", "grey")) +
+ ggtitle("Field incubation") ;inc_plot
+```
+
+## With predators
+```{r incplot1, fig.height=8}
+# Create a new column to label treatments with or without "1.6µm"
+iron_persistant_tax_all <- merged_df %>%
+  filter(Taxa %in% filtered_species$Taxa) %>%
+  mutate(predator_status = ifelse(grepl("1.6µm", treatment), "No_Predators", "Predators"),
+          DOM = str_extract(treatment, "^[^\\s]+")) # Extract first word before a space)
+
+# Generate the plot
+inc_plot1 <- iron_persistant_tax_all %>% 
+  filter(grepl("Incubation", experiment)) %>%
+  filter(predator_status == "Predators") %>%
+  ggplot(aes(fill = Taxa, y = V1, x=  #factor(experiment, levels = c("Incubation start", "Incubation end")) )) +
+               fct_relevel(sample,
+                             c(
+                             "S2_1",
+                             "S2_2",
+                             "E4_1", 
+                             "E4_2", 
+                             "E5_1", 
+                             "E5_2", 
+                             "E6_1", 
+                             "E6_2", 
+                             
+                             "S1_1", 
+                             "S1_2", 
+                             "E1_1", 
+                             "E1_2", 
+                             "E2_1", 
+                             "E2_2",
+                             "E3_1", 
+                             "E3_2", 
+                             
+                             "S4_1", 
+                             "S4_2",
+                             "E10_1", 
+                             "E10_2", 
+                             "E11_1", 
+                             "E11_2", 
+                             "E12_1",
+                             "E12_2", 
+                             
+                             "S3_1", 
+                             "S3_2",
+                             "E7_1", 
+                             "E7_2",
+                             "E8_1",
+                             "E8_2", 
+                             "E9_1",
+                             "E9_2",
+                            
+                             "S6_1", 
+                             "S6_2", 
+                             "E16_1",
+                             "E16_2",
+                             "E17_1",
+                             "E17_2",
+                             "E18_1",
+                             "E18_2",
+                             
+                             "S5_1", 
+                             "S5_2",
+                             "E13_1", 
+                             "E13_2",
+                             "E14_1",
+                             "E14_2",
+                             "E15_1",
+                             "E15_2"
+                 )))) +
+  
+  # Facet by 'predator_status' for rows and 'treatment' for columns
+  facet_grid(predator_status ~ factor(DOM), scales = "free_x") + 
+  
+  geom_bar(position = "stack", stat = "identity") + 
+  theme(legend.position = "bottom") +
+  
+  # Modify axis labels and text size
+  theme(axis.title.x = element_blank(), legend.title = element_blank(),
+        axis.text.x = element_text(size = 10, 
+                                   angle = 90, 
+                                   hjust = 0.5, 
+                                   vjust = 0)) +
+  
+  scale_y_continuous(name = "Relative abundance") +
+  scale_x_discrete(labels = function(x) ifelse(grepl("^S", x), "Start", "End")) +
+  
+  # Adjust legend spacing
+  theme(legend.spacing.y = unit(1, "mm")) +
+  
+  # Define custom colors for the fill
+  scale_fill_manual(values = c("#FFB6C1", "#A2A475", "#87CEEB", "#E6E6FA", "#98FB98", "#C27D38", 
+                               "#C8A2C8", "#02401B", "#89CFF0", "#98FB98", "#F08080", "#D8B70A", 
+                               "#FFD700", "#FFDAB9", "#972D15", "#29211F", "#FFFF99", "#D69C4E", 
+                               "#CCC591", "#00A08A", "grey")) +
+  
+  # Add the title
+  ggtitle("Field incubation")
+
+# Display the plot
+inc_plot1
+
+#ggsave(filename = paste(path_out,"Aggregated_iron_persistant.png",sep=""), width = 12, height = 8, units = "in", inc_plot)
+```
+
+## Without predator
+```{r incplot1.1, fig.height=8}
+inc_plot1.1 <- iron_persistant_tax_all %>% 
+  filter(grepl("Incubation", experiment)) %>%
+  filter(predator_status == "No_Predators") %>%
+  ggplot(aes(fill = Taxa, y = V1, x=  #factor(experiment, levels = c("Incubation start", "Incubation end")) )) +
+               fct_relevel(sample,
+                             c(
+                             "S2_1",
+                             "S2_2",
+                             "E4_1", 
+                             "E4_2", 
+                             "E5_1", 
+                             "E5_2", 
+                             "E6_1", 
+                             "E6_2", 
+                             
+                             "S1_1", 
+                             "S1_2", 
+                             "E1_1", 
+                             "E1_2", 
+                             "E2_1", 
+                             "E2_2",
+                             "E3_1", 
+                             "E3_2", 
+                             
+                             "S4_1", 
+                             "S4_2",
+                             "E10_1", 
+                             "E10_2", 
+                             "E11_1", 
+                             "E11_2", 
+                             "E12_1",
+                             "E12_2", 
+                             
+                             "S3_1", 
+                             "S3_2",
+                             "E7_1", 
+                             "E7_2",
+                             "E8_1",
+                             "E8_2", 
+                             "E9_1",
+                             "E9_2",
+                            
+                             "S6_1", 
+                             "S6_2", 
+                             "E16_1",
+                             "E16_2",
+                             "E17_1",
+                             "E17_2",
+                             "E18_1",
+                             "E18_2",
+                             
+                             "S5_1", 
+                             "S5_2",
+                             "E13_1", 
+                             "E13_2",
+                             "E14_1",
+                             "E14_2",
+                             "E15_1",
+                             "E15_2"
+                 )))) +
+  
+  # Facet by 'predator_status' for rows and 'treatment' for columns
+  facet_grid(predator_status ~ factor(DOM), scales = "free_x") + 
+  
+  geom_bar(position = "stack", stat = "identity") + 
+  theme(legend.position = "bottom") +
+  
+  # Modify axis labels and text size
+  theme(axis.title.x = element_blank(), legend.title = element_blank(),
+        axis.text.x = element_text(size = 10, 
+                                   angle = 90, 
+                                   hjust = 0.5, 
+                                   vjust = 0)) +
+  
+  scale_y_continuous(name = "Relative abundance") +
+  scale_x_discrete(labels = function(x) ifelse(grepl("^S", x), "Start", "End")) +
+  
+  # Adjust legend spacing
+  theme(legend.spacing.y = unit(1, "mm")) +
+  
+  # Define custom colors for the fill
+  scale_fill_manual(values = c("#FFB6C1", "#A2A475", "#87CEEB", "#E6E6FA", "#98FB98", "#C27D38", 
+                               "#C8A2C8", "#02401B", "#89CFF0", "#98FB98", "#F08080", "#D8B70A", 
+                               "#FFD700", "#FFDAB9", "#972D15", "#29211F", "#FFFF99", "#D69C4E", 
+                               "#CCC591", "#00A08A", "grey")) +
+  
+  # Add the title
+  ggtitle("Field incubation")
+
+# Display the plot
+inc_plot1.1
+```
+
+## Predator and No predator plots together
+```{r incplot1.2, fig.height=8}
+library(patchwork)
+
+# Remove individual titles and keep only the shared title for the entire figure
+final_plot <- (inc_plot1 + theme(plot.title = element_blank())) / 
+              (inc_plot1.1 + theme(plot.title = element_blank())) + 
+  plot_layout(guides = "collect") &       # Collect shared legend
+  theme(legend.position = "bottom")       # Position legend at the bottom
+
+# Add a shared title for the entire plot
+final_plot <- final_plot + 
+  plot_annotation(title = "Field Incubation")
+
+# Display the plot
+final_plot
+
+#ggsave(filename = paste(path_out,"Predator_vs_NoPredator_iron_persistant.png",sep=""), width = 12, height = 8, units = "in", final_plot)
+```
+
+##Incubation plot average from replicates
+
+Exclude species with relative abundance below 0.1, as for the linear model.
+
+```{r incplot_average_data, fig.height=8}
+library(dplyr)
+
+# Group by species and sample, calculate the mean relative abundance for replicates
+averaged_data <- iron_persistant_tax_all %>%
+  filter(grepl("Incubation", experiment)) %>% 
+  mutate(sample_id = sub("_\\d$", "", sample)) %>%   # Create a new column that represents the sample without the replicate number
+  filter(V1 > 0.1) %>%  # Exclude rows where relative abundance is 0
+  group_by(Taxa, sample_id, treatment) %>%
+  summarise(mean_abundance = mean(V1, na.rm = TRUE)) %>%   # Calculate the mean relative abundance for each species across replicates
+  ungroup()
+
+# Get species that are detected in both replicates (this ensures the species is detected in each replicate)
+# First, filter the data to get species detected in each replicate
+detected_species <- iron_persistant_tax_all %>%
+  filter(grepl("Incubation", experiment)) %>%
+  mutate(sample_id = sub("_\\d$", "", sample)) %>%  # Remove replicate numbers
+  filter(V1 > 0.1) %>%  # Only include non-zero abundance
+  group_by(Taxa, sample_id) %>%
+  summarise(detected_in_both = n_distinct(sample) == 2, .groups = "drop") %>%
+  filter(detected_in_both) %>%
+  pull(Taxa)
+
+# Now filter the averaged data to include only species detected in both replicates
+averaged_data_filtered <- averaged_data %>%
+  filter(Taxa %in% detected_species)
+
+# View the filtered averaged data
+head(averaged_data_filtered)
+
+species_excluded <- setdiff(averaged_data, averaged_data_filtered)
+
+check_excluded <- iron_persistant_tax_all %>%
+  filter(grepl("Incubation", experiment)) %>%
+  filter(Taxa == "Arcticibacterium luteifluviistationis")
+  #filter(Taxa == "Luteolibacter sp007126655") #%>%
+ # filter(sample == "E10")
+```
+
+
+```{r incplot_average, fig.height=8}
+
+
+```
+
+
+```{r incplot2, fig.height=8}
+# Create a new column for general treatment
+iron_persistant_tax_all <- merged_df %>%
+  filter(Taxa %in% filtered_species$Taxa) %>%
+  
+  # Create a general treatment column by removing the predator size information
+  mutate(general_treatment = gsub(" 1.6µm| 200µm", "", treatment),
+         predator_status = ifelse(grepl("1.6µm", treatment), "No_Predator", "Predator"))
+
+# Generate the plot
+inc_plot <- iron_persistant_tax_all %>%
+  filter(grepl("Incubation", experiment)) %>%
+  ggplot(aes(fill = Taxa, y = V1, x = fct_relevel(sample,
+                             c(
+                             "S2_1",
+                             "S2_2",
+                             "E4_1", 
+                             "E4_2", 
+                             "E5_1", 
+                             "E5_2", 
+                             "E6_1", 
+                             "E6_2", 
+                             
+                             "S1_1", 
+                             "S1_2", 
+                             "E1_1", 
+                             "E1_2", 
+                             "E2_1", 
+                             "E2_2",
+                             "E3_1", 
+                             "E3_2", 
+                             
+                             "S4_1", 
+                             "S4_2",
+                             "E10_1", 
+                             "E10_2", 
+                             "E11_1", 
+                             "E11_2", 
+                             "E12_1",
+                             "E12_2", 
+                             
+                             "S3_1", 
+                             "S3_2",
+                             "E7_1", 
+                             "E7_2",
+                             "E8_1",
+                             "E8_2", 
+                             "E9_1",
+                             "E9_2",
+                            
+                             "S6_1", 
+                             "S6_2", 
+                             "E16_1",
+                             "E16_2",
+                             "E17_1",
+                             "E17_2",
+                             "E18_1",
+                             "E18_2",
+                             
+                             "S5_1", 
+                             "S5_2",
+                             "E13_1", 
+                             "E13_2",
+                             "E14_1",
+                             "E14_2",
+                             "E15_1",
+                             "E15_2"
+                 )))) +
+  
+  # Facet by general_treatment for columns and predator_status for rows
+  facet_wrap(predator_status ~ general_treatment, ncol = 3, scales = "free_x") + 
+  
+  geom_bar(position = "stack", stat = "identity") + 
+  theme(legend.position = "bottom") +
+  
+  # Modify axis labels and text size
+  theme(axis.title.x = element_blank(), legend.title = element_blank(),
+        axis.text.x = element_text(size = 7, angle = 90, hjust = 0.5, vjust = 0)) +
+  
+  scale_y_continuous(name = "Relative abundance") +
+  
+  # Adjust legend spacing
+  theme(legend.spacing.y = unit(1, "mm")) +
+  
+  # Define custom colors for the fill
+  scale_fill_manual(values = c("#FFB6C1", "#A2A475", "#87CEEB", "#E6E6FA", "#98FB98", "#C27D38", 
+                               "#C8A2C8", "#02401B", "#89CFF0", "#98FB98", "#F08080", "#D8B70A", 
+                               "#FFD700", "#FFDAB9", "#972D15", "#29211F", "#FFFF99", "#D69C4E", 
+                               "#CCC591", "#00A08A", "grey")) +
+  
+  # Add the title
+  ggtitle("Field incubation")
+
+# Display the plot
+inc_plot
+```
+
+
+```{r incplot3, fig.height=8}
+library(ggvenn)
+
+# Extract the unique bacteria (taxa) for each predator status
+with_predator_taxa <- iron_persistant_tax_all %>%
+  filter(experiment == "Incubation end") %>%
+  filter(V1 > 0.07) %>%
+  filter(predator_status == "Predator") %>%
+  pull(Taxa) %>%
+  unique()
+
+without_predator_taxa <- iron_persistant_tax_all %>%
+  filter(experiment == "Incubation end") %>%
+  filter(V1 > 0.07) %>%
+  filter(predator_status == "No_Predator") %>%
+  pull(Taxa) %>%
+  unique()
+
+# Create a list with the sets of taxa
+venn_data <- list(
+  "With Predator" = with_predator_taxa,
+  "Without Predator" = without_predator_taxa
+)
+
+# Plot the Venn diagram using ggvenn
+venn_plot <- ggvenn(venn_data, fill_color = c("#E69F00", "#56B4E9"))
+
+# Display the Venn diagram
+venn_plot
+
+```
+
+## Matrix for modeling
+
+```{r matmod}
+#sum the abundance of the genus together to overcome the issue of too many unique ASVs (existing in less than 3 samples)
+genus_together <- tax_glom(gamma_all, taxrank="Genus", NArm=TRUE, bad_empty=c(NA, "", " ", "\t"))
+
+#Sort so ASV need to exist in at least 4 samples 
+gentop = genefilter_sample(genus_together, filterfun_sample(function(x) x > 0), A=4)
+top_gen = prune_taxa(gentop, genus_together)
+
+#Rename ASV names to Order_ASVnumber
+hmsc_mat1 <- otu_table(top_gen)
+colnames(hmsc_mat1) <- top_gen@sam_data[["Longname"]]
+tax_top1 <- tax_table(top_gen)
+order <- tax_top1[,4]
+rownames(hmsc_mat1) <- paste(seq(1,nrow(order)),"_", order[,1],sep="")
+
+#Save HMSC indata for gammaproteobacteria
+write.table(hmsc_mat1, paste(path,"hmsc_all_gamma_genussum_a4_test.txt",sep=""), sep="\t", quote=FALSE, row.name=TRUE)
+
+#Plot gamma selection
+#rownames(top_gen@otu_table) <- paste(seq(1,nrow(order)),"_", order[,1],sep="")
+gamma_plot2 <- plot_bars_phyloseq_v2(top_gen, phyl.level = "Order",unknown = FALSE,prop = 0) #,top = 9
+#png(res = 400, units = "cm", width = 25, height = 15, filename = paste(path,"Barplot_hmsc_all_gamma_genussum_a4_rel.png",sep=""))
+gamma <- ggplot(gamma_plot2, 
+  aes_string(x= fct_relevel(gamma_plot2$Description,c(
+                             "S2", 
+                             "E4", 
+                             "E5", 
+                             "E6", 
+                             
+                             "S1", 
+                             "E1", 
+                             "E2", 
+                             "E3", 
+                             
+                             "S4", 
+                             "E10", 
+                             "E11", 
+                             "E12",
+                             
+                             "S3", 
+                             "E7", 
+                             "E8", 
+                             "E9", 
+                            
+                             "S6", 
+                             "E16",
+                             "E17", 
+                             "E18",
+                             
+                             "S5", 
+                             "E13", 
+                             "E14", 
+                             "E15"
+                 )),  
+             y="Abundance", fill="Order")) +
+  facet_grid(~Treatment, scales = 'free') +
+  geom_bar(position="stack", stat="identity") + 
+  theme(legend.position = "right")  + 
+  theme(axis.title.x=element_blank(), legend.title = element_blank(),
+        axis.text.x=element_text(size = 8, angle=90, hjust =0.5,vjust=0)) +
+  scale_y_continuous(name="Relative abundance")  + 
+  scale_fill_manual(values = c("#D8B70A",  "#00A08A", "#C27D38",  "#046C9A",   "#CCC591", "#972D15",  "#02401B" ,"#FAEFD1","#81A88D","#29211F")) +
+  ggtitle("Gammaproteobacteria")   ; gamma
+#dev.off()
+
+```
+

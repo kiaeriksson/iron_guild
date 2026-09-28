@@ -1,0 +1,817 @@
+---
+title: "Manus4"
+output: html_document
+date: '2022-10-28'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#library(Hmsc)
+library(corrplot)
+library(ggplot2)
+library(phyloseq); packageVersion("phyloseq")
+#source("/Users/kaer0069/Documents/R/plot_bars_phyloseq_v2.R")
+
+path <- "C:/Users/kaer0069/Documents/PhD Ecology - Karolina Eriksson/R output/Manus 4 Illumina 16S/"
+
+#Ladda in till phyloseq-object 
+samdf <- read.table(paste(path,"Field-exp-2019-16S_Mapping_201109.txt",sep=""), sep="\t", header=TRUE,  row.names=1, comment="")
+#Remove "16S-" from Longname and description
+samdf$Longname <- sub("16S-", "", samdf$Longname)
+samdf$Description <- sub("16S-", "", samdf$Description)
+
+#taxa
+taxa <- read.table(paste(path,"taxonomy_seq_exp_course_2019_16S_f.txt",sep=""), sep = "\t",  row.names = 1)
+
+#otu
+otu <- read.table(paste(path,"feature_table_exp_course_2019_16S.txt",sep=""), sep = "\t",  row.names = 1)
+
+for ( col in 1:ncol(otu)){
+    colnames(otu)[col] <-  sub("X", "", colnames(otu)[col])
+}
+
+otu <- as.matrix(otu)
+taxa <- as.matrix(taxa)
+
+ps <- phyloseq(otu_table(otu, taxa_are_rows=TRUE), 
+               sample_data(samdf), 
+               tax_table(taxa))
+
+#Count reads and ad as a vector to the sample data
+order_samdf_index <-   order(rownames(samdf) )
+ordered_samdf <- samdf[order_samdf_index,]
+ordered_samdf$Reads <- sample_sums(ps)
+
+ps <- phyloseq(otu_table(otu, taxa_are_rows=TRUE), 
+               sample_data(ordered_samdf), 
+               tax_table(taxa))
+
+#Remove positive controls and blank samples #
+psnorm <- transform_sample_counts(ps, function(x) x / sum(x) )
+ps.noblank  = subset_samples(psnorm, Abb != "Poscont" &  Abb != "Blank" & Abb != "Filterblank" )
+
+#Relative abundance
+psnorm <- transform_sample_counts(ps, function(x) x / sum(x) )
+psnorm.noblank  = subset_samples(psnorm, Abb != "Poscont" &  Abb != "Blank" & Abb != "Filterblank" )
+```
+
+### Venn diagram treatments
+```{r}
+#Samples from end of experiment only
+psnorm.end = subset_samples(psnorm.noblank , Type != "Start sample"  )
+
+#VENNDIAGRAM
+physeq_nonfiltered = subset_samples(psnorm.end, Treatment == "Control 200µm" | Treatment == "Plankton 200µm" | Treatment == "Soil 200µm")
+physeq_filtered = subset_samples(psnorm.end, Treatment == "Control <1.6µm" | Treatment == "Plankton <1.6µm" | Treatment == "Soil <1.6µm")
+physeq_soil = subset_samples(psnorm.end, Treatment == "Soil 200µm" |  Treatment == "Soil <1.6µm")
+physeq_plankton = subset_samples(psnorm.end, Treatment == "Plankton 200µm" |  Treatment == "Plankton <1.6µm")
+physeq_control = subset_samples(psnorm.end, Treatment == "Control 200µm" |  Treatment == "Control <1.6µm")
+
+physeq_soilF = subset_samples(psnorm.end,  Treatment == "Soil <1.6µm")
+physeq_planktonF = subset_samples(psnorm.end,   Treatment == "Plankton <1.6µm")
+physeq_controlF = subset_samples(psnorm.end, Treatment == "Control <1.6µm")
+
+physeq_soilP = subset_samples(psnorm.end,  Treatment == "Soil 200µm")
+physeq_planktonP = subset_samples(psnorm.end,   Treatment == "Plankton 200µm")
+physeq_controlP = subset_samples(psnorm.end, Treatment == "Control 200µm")
+
+#Colsums all rows in ASV table
+asv_nonfiltered <- rowSums(otu_table(physeq_nonfiltered))
+asv_filtered <- rowSums(otu_table(physeq_filtered))
+asv_soil <- rowSums(otu_table(physeq_soil))
+asv_plankton <- rowSums(otu_table(physeq_plankton))
+asv_control <- rowSums(otu_table(physeq_control))
+
+asv_soilF <- rowSums(otu_table(physeq_soilF))
+asv_planktonF <- rowSums(otu_table(physeq_planktonF))
+asv_controlF <- rowSums(otu_table(physeq_controlF))
+
+asv_soilP <- rowSums(otu_table(physeq_soilP))
+asv_planktonP <- rowSums(otu_table(physeq_planktonP))
+asv_controlP <- rowSums(otu_table(physeq_controlP))
+
+#Change name of ASVs to ASV1_Genus etc
+testtest <- cbind(rownames(otu_table(psnorm.end)), tax_table(psnorm.end)[,6])
+rownames(testtest) <- paste("ASV",seq(1,nrow(testtest)),"_", testtest[,2],sep="")
+venn_data <- cbind(testtest, 
+                   asv_nonfiltered , 
+                   asv_filtered ,
+                   asv_soil,
+                   asv_plankton,
+                   asv_control,
+                   
+                   asv_soilF,
+                   asv_planktonF,
+                   asv_controlF,
+                   
+                   asv_soilP,
+                   asv_planktonP,
+                   asv_controlP
+                   )
+
+M1 <- as.matrix(venn_data) 
+
+# Identify NA values and replace them with "NA"
+M1[is.na(M1)] <- "NA"
+
+#Change to presence abs. Rowname instead of presence to separate ASVs.
+M1[M1 != 0] <- rownames(M1)[row(M1)[M1 != 0]]
+#M1[M1!=0] <- row(M1, as.factor = TRUE)[M1!=0]
+nonfiltered <- as.list(M1[,3])
+filtered <- as.list(M1[,4])
+soil <- as.list(M1[,5])
+plankton <- as.list(M1[,6])
+control <- as.list(M1[,7])
+
+soilF <- as.list(M1[,8])
+planktonF <- as.list(M1[,9])
+controlF <- as.list(M1[,10])
+
+soilP <- as.list(M1[,10])
+planktonP <- as.list(M1[,11])
+controlP <- as.list(M1[,12])
+
+#Filtered vs nonfiltered
+venn1 <- list(
+  Nonfiltered = nonfiltered, 
+  Filtered = filtered
+  )
+
+#DOM
+venn2 <- list(
+  Soil = soil,
+  Plankton = plankton,
+  Control = control
+  )
+
+venn3 <- list(
+  Soil_filtered = soilF,
+  Plankton_filtered = planktonF,
+  Control_filtered = controlF
+  )
+
+venn4 <- list(
+  Soil_nonfiltered = soilP,
+  Plankton_nonfiltered = planktonP,
+  Control_nonfiltered = controlP
+  )
+
+library("ggvenn")
+filtrations <- ggvenn(venn3, 
+              fill_color = c("#F3DF6C", "lightgreen",   "lightblue"), 
+              show_percentage = TRUE, 
+              digits = 0,
+              stroke_size = 0, 
+              stroke_color = "white",
+              set_name_size = 4); filtrations
+
+treatments <- ggvenn(venn4, 
+              fill_color = c("#EFC000FF", "darkgreen", "#87CEEB" ), 
+              show_percentage = TRUE, digits = 0, 
+              stroke_size = 0, 
+              stroke_color = "white",
+              set_name_size = 4); treatments
+
+#Save plots together
+library(patchwork)
+png(res = 400, units = "cm", width = 25, height = 30, filename = paste(path,"Venn_diagram_treatments_ASV_endofexp.png",sep=""))
+filtrations + treatments + plot_layout(nrow = 1)
+dev.off()
+
+```
+
+##########All bacteria, plots for phylum
+
+
+```{r setup, include=FALSE}
+#Plot phylum att jämföra med Nanopore-datat
+phylum_plot <- plot_bars_phyloseq_v2(ps.noblank, phyl.level = "Phylum",unknown = FALSE,top = 9,prop = 0)
+colors_test <- c("#D8B70A",  "#A2A475", "#81A88D", "#972D15", "#798E87", "#C27D38", "#CCC591", "#29211F", "grey") #"#02401B",
+#png(res = 400, units = "cm", width = 25, height = 15, filename = paste(path,"16S_illumina_phylum_top.png",sep=""))
+phylum_plot1 <- ggplot(phylum_plot, 
+  aes_string(x="Description", y="Abundance", fill = "Phylum" )) + #fct_relevel(phylum, names(phyla)))
+  facet_grid(~Treatment, scales = 'free') +
+  geom_bar(position="stack", stat="identity") + 
+  theme(legend.position = "right")  + 
+  theme(axis.title.x=element_blank(), legend.title = element_blank(),
+        axis.text.x=element_text(size = 4, angle=90, hjust =0.5,vjust=0)) +
+  scale_y_continuous(name="Reads")  + 
+  scale_fill_manual(values = colors_test) +
+  ggtitle("Field incubation - Amplicon 16S rRNA")   
+#dev.off()
+
+#Plot phylum relative abundance 
+phylum_plotnorm <- plot_bars_phyloseq_v2(psnorm.noblank, phyl.level = "Phylum",unknown = FALSE,top = 9,prop = 0)
+#png(res = 400, units = "cm", width = 25, height = 15, filename = paste(path,"16S_illumina_phylum_top_relative.png",sep=""))
+phylum_plotnorm1 <-ggplot(phylum_plotnorm, 
+  aes_string(x= fct_relevel(phylum_plotnorm$Description,c(
+                             "S2", 
+                             "E4", 
+                             "E5", 
+                             "E6", 
+                             
+                             "S1", 
+                             "E1", 
+                             "E2", 
+                             "E3", 
+                             
+                             "S4", 
+                             "E10", 
+                             "E11", 
+                             "E12",
+                             
+                             "S3", 
+                             "E7", 
+                             "E8", 
+                             "E9", 
+                            
+                             "S6", 
+                             "E16",
+                             "E17", 
+                             "E18",
+                             
+                             "S5", 
+                             "E13", 
+                             "E14", 
+                             "E15"
+                 )), 
+             y="Abundance", fill="Phylum")) +
+  facet_grid(~Treatment, scales = 'free') +
+  geom_bar(position="stack", stat="identity") + 
+  theme(legend.position = "right")  + 
+  theme(axis.title.x=element_blank(), legend.title = element_blank(),
+        axis.text.x=element_text(size = 8, angle=90, hjust =0.5,vjust=0)) +
+  scale_y_continuous(name="Relative abundance")  + 
+  scale_fill_manual(values = colors_test) +
+  ggtitle("Field incubation - Amplicon 16S rRNA")   ;phylum_plotnorm1
+#dev.off()
+
+#Subset gammaproteobact (Burkholderiales in Gammaproteobacteria is Betaproteobacteria)
+gamma_all <- subset_taxa(ps.noblank, Class == "Gammaproteobacteria")
+gamma_plot1 <- plot_bars_phyloseq_v2(gamma_all, phyl.level = "Order",unknown = FALSE,top = 9,prop = 0)
+#png(res = 400, units = "cm", width = 25, height = 15, filename = paste(path,"16S_illumina_all_gamma.png",sep=""))
+gamma <- ggplot(gamma_plot1, 
+  aes_string(x= fct_relevel(gamma_plot1$Description,c(
+                             "S2", 
+                             "E4", 
+                             "E5", 
+                             "E6", 
+                             
+                             "S1", 
+                             "E1", 
+                             "E2", 
+                             "E3", 
+                             
+                             "S4", 
+                             "E10", 
+                             "E11", 
+                             "E12",
+                             
+                             "S3", 
+                             "E7", 
+                             "E8", 
+                             "E9", 
+                            
+                             "S6", 
+                             "E16",
+                             "E17", 
+                             "E18",
+                             
+                             "S5", 
+                             "E13", 
+                             "E14", 
+                             "E15"
+                 )), 
+             y="Abundance", fill="Order")) +
+  facet_grid(~Treatment, scales = 'free') +
+  geom_bar(position="stack", stat="identity") + 
+  theme(legend.position = "right")  + 
+  theme(axis.title.x=element_blank(), legend.title = element_blank(),
+        axis.text.x=element_text(size = 4, angle=90, hjust =0.5,vjust=0)) +
+  scale_y_continuous(name="Relative abundance")  + 
+  scale_fill_manual(values = colors_test) +
+  ggtitle("Illumina 16S amplicon classification")   ; gamma
+#dev.off()
+```
+
+##########Sort gammaproteobacteria
+```{r setup, include=FALSE}
+
+#sum the abundance of the genus together to overcome the issue of too many unique ASVs (existing in less than 3 samples)
+genus_together <- tax_glom(gamma_all, taxrank="Genus", NArm=TRUE, bad_empty=c(NA, "", " ", "\t"))
+
+#Sort so ASV need to exist in at least 4 samples 
+gentop = genefilter_sample(genus_together, filterfun_sample(function(x) x > 0), A=4)
+top_gen = prune_taxa(gentop, genus_together)
+
+#Rename ASV names to Order_ASVnumber
+hmsc_mat1 <- otu_table(top_gen)
+colnames(hmsc_mat1) <- top_gen@sam_data[["Longname"]]
+tax_top1 <- tax_table(top_gen)
+order <- tax_top1[,4]
+rownames(hmsc_mat1) <- paste(seq(1,nrow(order)),"_", order[,1],sep="")
+
+#Save HMSC indata for gammaproteobacteria
+write.table(hmsc_mat1, paste(path,"hmsc_all_gamma_genussum_a4_test.txt",sep=""), sep="\t", quote=FALSE, row.name=TRUE)
+
+#Plot gamma selection
+#rownames(top_gen@otu_table) <- paste(seq(1,nrow(order)),"_", order[,1],sep="")
+gamma_plot2 <- plot_bars_phyloseq_v2(top_gen, phyl.level = "Order",unknown = FALSE,prop = 0) #,top = 9
+#png(res = 400, units = "cm", width = 25, height = 15, filename = paste(path,"Barplot_hmsc_all_gamma_genussum_a4_rel.png",sep=""))
+gamma <- ggplot(gamma_plot2, 
+  aes_string(x= fct_relevel(gamma_plot2$Description,c(
+                             "S2", 
+                             "E4", 
+                             "E5", 
+                             "E6", 
+                             
+                             "S1", 
+                             "E1", 
+                             "E2", 
+                             "E3", 
+                             
+                             "S4", 
+                             "E10", 
+                             "E11", 
+                             "E12",
+                             
+                             "S3", 
+                             "E7", 
+                             "E8", 
+                             "E9", 
+                            
+                             "S6", 
+                             "E16",
+                             "E17", 
+                             "E18",
+                             
+                             "S5", 
+                             "E13", 
+                             "E14", 
+                             "E15"
+                 )),  
+             y="Abundance", fill="Order")) +
+  facet_grid(~Treatment, scales = 'free') +
+  geom_bar(position="stack", stat="identity") + 
+  theme(legend.position = "right")  + 
+  theme(axis.title.x=element_blank(), legend.title = element_blank(),
+        axis.text.x=element_text(size = 8, angle=90, hjust =0.5,vjust=0)) +
+  scale_y_continuous(name="Relative abundance")  + 
+  scale_fill_manual(values = c("#D8B70A",  "#00A08A", "#C27D38",  "#046C9A",   "#CCC591", "#972D15",  "#02401B" ,"#FAEFD1","#81A88D","#29211F")) +
+  ggtitle("Gammaproteobacteria")   ; gamma
+#dev.off()
+
+
+```
+
+######Sort top 100, first by summing genus
+```{r setup, include=FALSE}
+
+#sum the abundance of the genus together to overcome the issue of too many unique ASVs (existing in less than 3 samples)
+genus_together <- tax_glom(ps.noblank, taxrank="Genus", NArm=TRUE, bad_empty=c(NA, "", " ", "\t"))
+
+#Sort so ASV need to exist in at least 4 samples 
+top_genus = genefilter_sample(genus_together, filterfun_sample(function(x) x > 0), A=4)
+top_abun = prune_taxa(top_genus, genus_together)
+
+# Subset object to top N taxa
+top_asvs <- names(sort(taxa_sums(top_abun), decreasing = TRUE))[1:100]
+top100 <- prune_taxa(top_asvs, top_abun)
+
+#Rename ASV names to Order_ASVnumber
+hmsc_mat <- otu_table(top100)
+colnames(hmsc_mat) <- top100@sam_data[["Longname"]]
+tax_top <- tax_table(top100)
+order <- tax_top[,4]
+rownames(hmsc_mat) <- paste(seq(1,nrow(order)),"_", order[,1],sep="")
+
+#Save indata file to model
+write.table(hmsc_mat, paste(path,"hmsc_genussum_top100_a4.txt",sep=""), sep="\t", quote=FALSE, row.name=TRUE)
+
+#Plot top selection 
+#rownames(top_gen@otu_table) <- paste(seq(1,nrow(order)),"_", order[,1],sep="")
+top_plot2 <- plot_bars_phyloseq_v2(top100, phyl.level = "Order",unknown = FALSE,prop = 0) #,top = 9
+#png(res = 400, units = "cm", width = 25, height = 15, filename = paste(path,"Barplot_hmsc_genussum_top100_a4_rel.png",sep=""))
+top_plot2 <- ggplot(top_plot2, 
+  aes_string(x= fct_relevel(top_plot2$Description,c(
+                             "S2", 
+                             "E4", 
+                             "E5", 
+                             "E6", 
+                             
+                             "S1", 
+                             "E1", 
+                             "E2", 
+                             "E3", 
+                             
+                             "S4", 
+                             "E10", 
+                             "E11", 
+                             "E12",
+                             
+                             "S3", 
+                             "E7", 
+                             "E8", 
+                             "E9", 
+                            
+                             "S6", 
+                             "E16",
+                             "E17", 
+                             "E18",
+                             
+                             "S5", 
+                             "E13", 
+                             "E14", 
+                             "E15"
+                 )),  
+             y="Abundance", fill="Order")) +
+  facet_grid(~Treatment, scales = 'free') +
+  geom_bar(position="stack", stat="identity") + 
+  theme(legend.position = "right")  + 
+  theme(axis.title.x=element_blank(), legend.title = element_blank(),
+        axis.text.x=element_text(size = 8, angle=90, hjust =0.5,vjust=0)) +
+  scale_y_continuous(name="Relative abundance")  + 
+  scale_fill_manual(values = c("#D8B70A",  "#F4B5BD", "#C27D38",  "#798E87", "#273046","#354823", "#85D4E3",  "#02401B" ,"#FAEFD1","#81A88D","#1E1E1E")) +
+  ggtitle("Top100")   ; top_plot2 
+#dev.off()
+
+
+```
+
+##########PRB
+```{r setup, include=FALSE}
+#Save information about bacteria. Remove information about Mitochondria and Chloroplast.
+physeq <-   subset_taxa(psnorm, 
+    Kingdom == "Bacteria" &
+    Family  != "mitochondria" |
+   Class   != "Chloroplast"
+  )
+
+
+#Pick out families
+physeq.PRB.family <-  subset_taxa(physeq,
+    Family == "Pseudomonadaceae" |
+    Genus == "Mycobacterium" |
+    Family == "Rickettsiaceae" |
+    Family == "Legionellaceae" 
+  )
+
+family_plot <- plot_bars_phyloseq_v2(physeq.PRB.family, phyl.level = "Genus",unknown = FALSE,file = paste(path,"bar_plot_family.png",sep=""),top = 15,prop = 0)
+
+#png(res = 200, units = "cm", width = 30, height = 30, filename = paste(path,"abundance_treatment_grouped.png",sep=""))
+p1 <- ggplot(family_plot , aes_string(x="Type", y="Abundance", fill="Genus")) + geom_bar(stat="identity", position=position_fill(reverse=TRUE),  color="black") + ggtitle("")+ facet_grid(~Treatment, scales = 'free') + theme(axis.title.x=element_blank(), axis.text.x=element_text(size = 8, angle=45, hjust =0.5,vjust=0.4), legend.position = "none") ; p1
+#dev.off()
+
+#png(res = 200, units = "cm", width = 20, height = 20, filename = paste(path,"relabundance_treatment_family.png",sep=""))
+p2 <- plot_bar(physeq.PRB.family, "Longname", fill="Family") + 
+  facet_grid(~factor(Treatment), 
+                     #levels=c()),
+             scales = 'free') + 
+  theme(strip.text.x = element_text(size = 5)) +
+  theme(axis.title.x = element_blank()) + 
+  scale_y_continuous(name="Relative abundance")  + 
+  #scale_fill_manual(values=col_leg) + 
+  theme(axis.title.x=element_blank(), 
+        axis.text.x=element_text(size = 7, angle=90, hjust =0.5,vjust=0.4)) ;p2
+#dev.off()
+
+#Remove ASVs that are in blank sample 
+#Filtrera så "ASV" finns i minst ett prov
+bad_taxa <- subset_samples(physeq.PRB.family, Abb == "Blank" | Abb == "Filterblank")
+bad_taxa2 = genefilter_sample(bad_taxa , filterfun_sample(function(x) x > 0), A=1)
+bad_taxa_final = prune_taxa(bad_taxa2 , bad_taxa)
+
+#Remove positive controls and blank samples #
+physeq.noblank  = subset_samples(physeq.PRB.family, Abb != "Poscont" &  Abb != "Blank" & Abb != "Filterblank" )
+
+#Ta bort ASVer från blankarna
+tax_bad <- rownames(tax_table(bad_taxa_final))
+allTaxa = taxa_names(physeq.noblank)
+allTaxa <- allTaxa[!(allTaxa %in% tax_bad)]
+physeq.noblank1 = prune_taxa(allTaxa, physeq.noblank)
+
+#Sortera så ASV finns i minst 1 prover 
+physeq.noblank.filtASV = genefilter_sample(physeq.noblank1 , filterfun_sample(function(x) x > 0), A=1)
+physeq.noblank.filt = prune_taxa(physeq.noblank.filtASV, physeq.noblank1 )
+
+#Byt namn på ASVer till Family_number
+physeq.noblank2 <- physeq.noblank.filt
+asvs_prb <- tax_table(physeq.noblank2)[,5]
+rownames(asvs_prb)<- paste(asvs_prb[,1],"_", seq(1,nrow(asvs_prb)),sep="")
+taxa_names(physeq.noblank2) <- rownames(asvs_prb)
+tax_table(physeq.noblank2)[,5] <- taxa_names(physeq.noblank2) 
+
+
+#Spara textfil med ASV-seq och namn
+nyckel <- cbind( rownames(tax_table(physeq.noblank.filt)), rownames(tax_table(physeq.noblank2)) )
+write.table(nyckel, paste(path,"ASV_sekvens_nyckel.txt",sep=""), sep="\t", quote=FALSE, row.name=FALSE)
+
+write.table(rownames(tax_table(physeq.noblank.filt)), paste(path,"ASV_sekvens.txt",sep=""), sep="\t", quote=FALSE, row.name=FALSE)
+
+#Spara fil med ASV-tabell med Familje-namn
+save_mat <- otu_table(physeq.noblank2)
+colnames(save_mat) <- physeq.noblank2@sam_data[["Longname"]]
+write.table(save_mat, paste(path,"ASV_tabell_familj_221201.txt",sep=""), sep="\t", quote=FALSE, row.name=TRUE)
+
+#Spara fastafil med taxonomi och sekvenser
+library("seqinr")
+end_count <- dim(nyckel)[1]
+count <- seq(1,end_count)
+
+names <- paste(nyckel[,2], sep = "") 
+asv <- paste(nyckel[,1], sep = "") 
+
+for (i in 1:end_count){
+  write(paste(">",names[i], sep=""), paste(path,"fasta_PRB.txt",sep=""), append = TRUE)
+  write(asv[i], paste(path,"fasta_PRB.txt",sep=""), append = TRUE)
+}
+
+
+
+```
+# Cluster PRB into groups based on sequence alignment done in muscle
+```{r}
+#Fastafil in i MUSCLE. CLUSTALW
+library(ggplot2)
+library(ape)
+library(ggtree)
+
+#Mål: konsensus-sekvens utifrån grupp för att göra bra gruppindelning
+
+#Träd (Nexus-format)
+muscle_tree_PRB <- read.table(paste(path,"muscle_tree_PRB.txt",sep=""), sep="\t", header=TRUE,   comment="")
+  
+PRB_tree <- read.tree(paste(path,"muscle_tree_PRB.txt",sep="")); PRB_tree
+plot(PRB_tree)
+#computes the pairwise distances between the pairs of tips from a phylogenetic tree using its branch lengths.
+#https://rdrr.io/cran/ape/man/cophenetic.phylo.html
+distance_matrix <- cophenetic.phylo(PRB_tree)
+
+#Välj no. of clusters och gruppea mha k-means
+no_cluster <- 20
+clusters <- kmeans(distance_matrix, centers = no_cluster)
+prb_clust <- data.frame(Group = clusters[["cluster"]], ASVnames = names(clusters[["cluster"]]))
+
+#Summera ihop abundans för grupperna
+order_prb <-   order(rownames(prb_clust) )
+ordered_prb_index <- prb_clust[order_prb,]
+
+#Order ASV matrix
+asv_mat <- read.table(paste(path,"ASV_tabell_familj_221201.txt",sep=""), sep="\t", header=TRUE,   comment="", check.names = FALSE)
+asv_mat <- asv_mat[order(rownames(asv_mat)),]
+
+#Loopa över index 
+#Summera ihop abundansen per grupp.
+group_mat <- as.data.frame(matrix(0, no_cluster, ncol(asv_mat)))
+colnames(group_mat) <- colnames(asv_mat)
+for (i in 1:no_cluster){
+  asv_mat[ordered_prb_index$Group == i,]
+  group_sum <- colSums(asv_mat[ordered_prb_index$Group == i,])
+  group_mat[i,] <- group_sum
+  rownames(group_mat)[i] <- paste(substr(rownames(asv_mat)[ordered_prb_index$Group == i][1], 1, 5), "_", i, sep="")
+}
+
+#Spara fil över grupperade PRBer
+write.table(group_mat, paste(path,"Grouped_ASV_tabell_familj_221201.txt",sep=""), sep="\t", quote=FALSE, row.name=TRUE)
+
+#Plot PRB selection - Relative abundance
+#rownames(top_gen@otu_table) <- paste(seq(1,nrow(order)),"_", order[,1],sep="")
+prb_plot2 <- plot_bars_phyloseq_v2(physeq.noblank.filt, phyl.level = "Order",unknown = FALSE,prop = 0) #,top = 9
+#png(res = 400, units = "cm", width = 25, height = 15, filename = paste(path,"Barplot_hmsc_PRB_rel.png",sep=""))
+prb_p <- ggplot(prb_plot2, 
+  aes_string(x= fct_relevel(prb_plot2$Description,c(
+                             "S2", 
+                             "E4", 
+                             "E5", 
+                             "E6", 
+                             
+                             "S1", 
+                             "E1", 
+                             "E2", 
+                             "E3", 
+                             
+                             "S4", 
+                             "E10", 
+                             "E11", 
+                             "E12",
+                             
+                             "S3", 
+                             "E7", 
+                             "E8", 
+                             "E9", 
+                            
+                             "S6", 
+                             "E16",
+                             "E17", 
+                             "E18",
+                             
+                             "S5", 
+                             "E13", 
+                             "E14", 
+                             "E15"
+                 )),   
+             y="Abundance", fill="Order")) +
+  facet_grid(~Treatment, scales = 'free') +
+  geom_bar(position="stack", stat="identity") + 
+  theme(legend.position = "right")  + 
+  theme(axis.title.x=element_blank(), legend.title = element_blank(),
+        axis.text.x=element_text(size = 8, angle=90, hjust =0.5,vjust=0)) +
+  scale_y_continuous(name="Relative abundance")  + 
+  scale_fill_manual(values = c("darkgrey","#972D15",  "#02401B" ,"#FAEFD1")) +
+  ggtitle("PRB")   ; prb_p
+#dev.off()
+
+#plot together for the three datasets. width = 25, height = 45, 
+png(res = 400, units = "cm", width = 25, height = 30, filename = paste(path,"Barplot_hmsc_rel.png",sep=""))
+arranged_plots <- ggpubr::ggarrange(top_plot2, gamma, prb_p, nrow = 3, ncol = 1) ; arranged_plots
+dev.off()
+
+```
+
+
+```{r}
+
+#Dendrogram miljöparametrar
+
+require(factoextra)
+cor.mat <- cor(XData[,17:24]) # y contains scaled variables
+colnames(cor.mat) <- rownames(cor.mat) #<- c("Cloride", "Sodium","Potassium","Turbidity","ColorVal","pH","Alkalinity", "CODMn","Conductivity",  "TotalHardness", "Sulfate","Ammonium", "Ammonium_nitrogen", "Nitrate","Nitrate_nitrogen","Calcium", "Iron", "Magnesium", "Manganese", "Aluminium", "Copper")
+
+#upper_tri <- get_lower_upper_tri(cor.mat,tri.type = "upper")
+cor.mat[lower.tri(cor.mat)] <- 0
+upper_tri <- cor.mat
+colnames(upper_tri) <- rownames(upper_tri) <- colnames(XData[,17:24])
+#melted_cormat <- melt(cor.mat)
+library(reshape2)
+melted_cormat <- melt(upper_tri, na.rm = TRUE)
+# Heatmap
+library(ggplot2)
+pcor <- ggplot(data = melted_cormat, aes(Var2, Var1, fill = value))+
+geom_tile(color = "white")+
+scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+   midpoint = 0, limit = c(-1,1), space = "Lab", 
+   name="Pearson\nCorrelation") +
+  theme_minimal()+ 
+ theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+    hjust = 1),axis.title = element_blank(),legend.text = element_text(size = 13),legend.title = element_text(size = 14))+
+coord_fixed(); pcor
+
+#ggsave(filename = "figures/corrplot_chem_data.pdf",pcor)
+#ggsave(filename = "figures/corrplot_chem_data.png",pcor)
+
+## Check pairwise correlations
+index <- which((melted_cormat$value > 0.6 | melted_cormat$value < -0.6) & melted_cormat$value < 0.99)
+print(melted_cormat[index,])
+write.table(x = melted_cormat[index,],file = "Save/high_correlation_chem.txt",quote = F,sep="\t",row.names = F)
+d = 1-dist(cor.mat)
+res.h <- hclust(d = dist(cor.mat))
+groups <- cutree(res.h,k = 8)
+
+library("magrittr")
+dend <- res.h %>%
+  as.dendrogram %>%
+   set("branches_k_color", k=8) %>% set("branches_lwd", 1.2)  
+# plot the dend in usual "base" plotting engine:
+plot(dend)
+# Rectangle dendrogram using ggplot2
+ggd1 <- as.ggdend(dend)
+p <- ggplot(ggd1, horiz = TRUE); p #+                                              # Change color brewer palette
+  #scale_colour_brewer(palette = "Paired"); p 
+ggsave(filename = "figures/dendrogram_chem_data.pdf",p)
+ggsave(filename = "figures/dendrogram_chem_data.png",p)
+obj <- cluster::clusGap(cor.mat,FUN = hcut,K.max = 20)
+fviz_gap_stat(obj)
+
+```
+
+```{r}
+#Try these codes for plotting the relationships between your independent variables:
+#install.packages("GGally")
+library(GGally)
+
+#read data
+data1 <- read.table(paste(path,"Env_summary_to_R.txt",sep=""), sep="\t", header=TRUE,   comment="")
+data <- data1[,6:13]
+
+#check relationships between explanatory variables. 
+#Pch refers to the shape of the symbol and then the color.
+pairs(data, pch = 18, col = "steelblue") 
+#check correlationships beetween explanatory variables. 
+ggpairs(data) 
+
+#For checking observations between the response and each of the explanatory variable you can try this simple plot (but then you will have to change the x for the other explanatory variables):
+plot(data$x, data$y)
+ 
+
+```
+################### PCA & HMSC prep
+
+```{r}
+#HMSC
+
+XData <- read.table(paste(path,"Env_summary_to_R_upd.txt",sep=""), sep="\t", header=TRUE,   comment="")
+
+#Check best option for normal distribution
+#hist(log(log(XData$TDP)))
+#hist(log(XData$TDN))
+#hist((XData$DOC))
+#hist(log(XData$PO4.P))
+#hist(log((XData$NH4.N))) #loglog not possible (NaN)
+#hist(XData$NO2.N)
+#hist(log(XData$NO3.N))
+#hist(XData$SiO2.Si)
+#hist(XData$Temperature..Â.C.)
+#hist(XData$pH)
+#hist(XData$Chl..mgChl.m.3.) #log
+#hist(XData$Primary.production..mgC.m.3.d.1.) #log
+#hist(XData$Bacteria.production..mgC.m.3.d.1.) #log
+#hist(XData$Bacteria.abundance..cells.ml.1.)
+#hist(XData$Bacteria.biomass..mgC.m.3.) #log
+#hist(XData$Phototrophic.picoeukaryotes.abundance..cell.ml.1.)
+#hist(XData$Picocyanobacteria.abundance..cell.ml.1.)
+#hist(XData$Phototrophic.picoeukaryotes.biomass..mgC.m.3.)
+#hist(XData$Picocyanobacteria.biomass..mgC.m.3.)       
+#Lägg till även protozoan biomass ug     
+       
+#Ad the final choice of distribution of the parameters as a new column
+XData$TDPloglog <- log(log(XData$TDP))
+XData$TDNlog <- log(XData$TDN)
+XData$DOCnorm <- XData$DOC
+XData$PO4.Plog <- log(XData$PO4.P)
+XData$NH4.Nlog <- (log(XData$NH4.N))
+XData$NO2.Nnorm <- XData$NO2.N
+XData$NO3.Nlog <- log(XData$NO3.N)
+XData$SiO2.Sinorm <- XData$SiO2.Si
+#XData$Chllog <- log(XData$Chl..mgChl.m.3.) #log Includes NAs
+XData$Primary.productionlog <- log(XData$Primary.production..mgC.m.3.d.1.) #log
+XData$Bacteria.productionlog <- log(XData$Bacteria.production..mgC.m.3.d.1.) #log
+XData$Bacteria.biomasslog <- log(XData$Bacteria.biomass..mgC.m.3.) #log
+
+#XData on right format
+XData$Day <- as.factor(XData$Day)
+XData$Treatment <- as.factor(XData$Treatment)
+XData$Shortname <- as.factor(XData$Shortname)
+XData$ID <- as.factor(XData$ID)
+XData$Description <- as.factor(XData$Description)
+XData$Longname <- as.factor(XData$Longname)
+
+
+#Lägg till filtered / non-filtered
+XData$Filtered <- FALSE
+XData$Filtered[grep("<", XData$Treatment)] <- TRUE
+XData$DOM <- substr(XData$Shortname,1,1)
+XData$DOM <- as.factor(XData$DOM)
+
+#Lägg in reads!
+#Count reads and ad as a vector to the sample data
+XData <- XData[order(XData$Longname),]
+reads_mat <- ps.noblank@sam_data
+reads_ordered <- reads_mat[order(reads_mat$Longname),]
+XData$Reads <- reads_ordered$Reads
+
+#save indata
+write.table(XData, paste(path,"XData_incubation_study_upd.txt",sep=""), sep="\t", quote=FALSE, row.name=FALSE)
+```
+
+
+```{r}
+############# PCA on normalized data
+#scale to center
+library(devtools)
+library(ggfortify)
+library(ggplot2)
+library(ggrepel)
+library(ggpubr)
+
+data_pca <-XData[, c(28, 30, 39) ]
+#pcatest <- prcomp(data_pca, scale. = TRUE)
+pcatest <- vegan::rda(
+  data_pca
+)
+
+XData$Treatment <- gsub("Â", "", XData$Treatment)
+
+#as numerical Day
+XData$Day <- as.factor(XData$Day)
+
+#PCA plot
+png(res = 400, units = "cm", width = 15, height = 10, filename = paste(path,"PCA_230921.png",sep=""))
+test1 <- autoplot(pcatest, data = XData, colour = 'Day', shape = 'Treatment',
+         loadings = TRUE, loadings.colour = 'black',
+         loadings.label = FALSE, loadings.label.size = 3, loadings.label.colour = 'black')+
+  #stat_ellipse(geom = "polygon", fill = NA) +
+  scale_x_continuous(limits = c(-0.3,0.45)) +
+  scale_y_continuous(limits = c(-0.3,0.4)) +
+   annotate("text", x = -0.2, y = 0.2, label = "Bacterial Biomass")+
+   annotate("text", x = 0.11, y = 0.33, label = "TDP") +
+   annotate("text", x = 0.3, y = 0.02, label = "DOC") +
+  #scale_fill_manual(values = c("black", "grey")); test1
+dev.off()
+
+
+```
+
+
+
+
+

@@ -1,0 +1,35 @@
+The output of kraken-report is tab-delimited, with one line per taxon. The fields of the output, from left-to-right, are as follows:
+
+1. Percentage of reads covered by the clade rooted at this taxon
+2. Number of reads covered by the clade rooted at this taxon
+3. Number of reads assigned directly to this taxon
+4. A rank code, indicating (U)nclassified, (D)omain, (K)ingdom, (P)hylum, (C)lass, (O)rder, (F)amily, (G)enus, or (S)pecies. 
+All other ranks are simply '-'.
+5. NCBI taxonomy ID
+6. indented scientific name
+
+To give some guidance toward selecting an appropriate threshold, 
+we show here the results of different thresholds on the MiSeq metagenome 
+from the Kraken paper (see the paper for more details; note that the database 
+used here is more recent than that used in the paper). 
+Precision, sensitivity, and F-score are measured at the genus rank:
+
+Thres	Prec	Sens	F-score
+0	95.43	77.32	85.43
+0.05	97.28	76.31	85.53
+0.10	98.25	75.13	85.15
+0.15	98.81	73.87	84.54
+0.20	99.13	72.82	83.96
+0.25	99.38	71.74	83.33
+0.30	99.55	70.75	82.71
+0.35	99.61	69.53	81.90
+0.40	99.66	68.35	81.09
+0.45	99.70	66.93	80.09
+0.50	99.71	65.49	79.06
+
+As can be seen, with no threshold (i.e., Kraken's original labels), 
+Kraken's precision is fairly high, but it does increase with the threshold. 
+Diminishing returns apply, however, and there is a loss in sensitivity that 
+must be taken into account when deciding on the threshold to use for your own project.
+
+https://ccb.jhu.edu/software/kraken/MANUAL.html#output-format
